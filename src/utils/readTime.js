@@ -1,3 +1,4 @@
+// src/utils/readTime.js
 export function calculateReadTime(content) {
     const wordsPerMinute = 200;
     const wordCount = content.trim().split(/\s+/).length;

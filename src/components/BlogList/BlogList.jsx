@@ -1,19 +1,17 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
-import { useSearch } from "../../hooks/useSearch";
 import { useFilters } from "../../hooks/useFilters";
-import { Oval } from "react-loader-spinner";
+import { useSearch } from "../../hooks/useSearch";
+import { usePagination } from "../../hooks/usePagination";
 import BlogSearch from "../BlogSearch/BlogSearch";
 import BlogFilters from "../BlogFilters/BlogFilters";
 import Pagination from "../Pagination/Pagination";
 import BlogPost from "../BlogPost/BlogPost";
+import { Oval } from "react-loader-spinner";
+import PropTypes from "prop-types";
 import styles from "./BlogList.module.css";
 
 const POSTS_PER_PAGE = 5;
 
 function BlogList({ posts, isDarkMode, onFilterChange }) {
-  const [currentPage, setCurrentPage] = useState(1);
-
   const {
     filters,
     handleFilterChange,
@@ -28,21 +26,20 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
     handleSearch,
     results: searchResults,
     isSearching,
-    isLoading, // Loading state from `useSearch`
-  } = useSearch(filteredItems, [
-    "title",
-    "content",
-    "author",
-    "tags",
-    "category",
-  ]);
+    isLoading,
+  } = useSearch(filteredItems, ["title", "content", "author", "tags", "category"]);
 
   const displayedPosts = isSearching ? searchResults : filteredItems;
-  const totalPages = Math.ceil(displayedPosts.length / POSTS_PER_PAGE);
-  const currentPosts = displayedPosts.slice(
-    (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
-  );
+
+  // Use `usePagination` without modifications
+  const {
+    items: currentPosts,
+    currentPage,
+    totalPages,
+    nextPage,
+    prevPage,
+    goToPage,
+  } = usePagination(displayedPosts, POSTS_PER_PAGE);
 
   return (
     <div>
@@ -54,7 +51,7 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
         />
         <BlogFilters
           filters={filters}
-          onFilterChange={onFilterChange ? onFilterChange : handleFilterChange}
+          onFilterChange={onFilterChange || handleFilterChange}
           categories={categories}
           authors={authors}
           allTags={allTags}
@@ -80,12 +77,16 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              onPageChange={goToPage}
             />
           </>
         ) : (
           <div className={styles.noResults}>
-            No posts found matching your criteria.
+            <p>No posts found matching your criteria.</p>
+            <p>
+              Try adjusting your search or filters. If no posts are available, please add
+              a new post to get started!
+            </p>
           </div>
         )}
       </div>

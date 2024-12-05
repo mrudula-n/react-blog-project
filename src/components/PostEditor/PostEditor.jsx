@@ -1,3 +1,4 @@
+// src/components/PostEditor
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -61,10 +62,10 @@ function PostEditor({ post = {}, isDarkMode }) {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, type, checked, files } = e.target;
     let newValue = type === "checkbox" ? checked : value;
-
+  
     if (type === "file" && files[0]) {
       const file = files[0];
       if (!["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
@@ -74,15 +75,24 @@ function PostEditor({ post = {}, isDarkMode }) {
         }));
         return;
       }
-      newValue = URL.createObjectURL(file);
+      newValue = await convertToBase64(file);
     }
-
+  
     setFormData((prev) => ({
       ...prev,
       [name]: newValue,
     }));
-
+  
     setIsDirty(true);
+  };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleBlur = (e) => {

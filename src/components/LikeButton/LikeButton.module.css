@@ -1,5 +1,4 @@
 .likeButton {
-    background-color: transparent;
     border: none;
     display: flex;
     align-items: center;
@@ -14,8 +13,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid black; /* Circle border around heart */
-    border-radius: 50%;
+    border-radius: 90%;
     transition: border-color 0.3s ease;
   }
   
@@ -27,8 +25,8 @@
   /* Initial unliked heart with transparent fill */
   .unlikedIcon {
     color: transparent; /* Heart is only outlined initially */
-    stroke: black; /* Black outline for heart */
-    stroke-width: 20px;
+    stroke: white; /* Black outline for heart */
+    stroke-width: 50px;
   }
   
   /* Liked state (filled heart) */

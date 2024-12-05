@@ -1,13 +1,13 @@
+// src/components/LikeButton
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaHeart } from 'react-icons/fa';
 import styles from './LikeButton.module.css';
 
 function LikeButton({ postId, initialLikes, onLikeChange, isDarkMode }) {
-  const likeCountKey = `likes-${postId}`;  // Unique key for the likes count of each post
-  const likeStatusKey = `isLiked-${postId}`;  // Unique key for the like status of each post
+  const likeCountKey = `likes-${postId}`;  
+  const likeStatusKey = `isLiked-${postId}`;  
 
-  // Retrieve persisted like state for this specific postId from localStorage
   const [likes, setLikes] = useState(() => {
     const storedLikes = localStorage.getItem(likeCountKey);
     return storedLikes ? parseInt(storedLikes, 10) : initialLikes;
@@ -18,7 +18,6 @@ function LikeButton({ postId, initialLikes, onLikeChange, isDarkMode }) {
     return storedLiked ? JSON.parse(storedLiked) : false;
   });
 
-  // Sync likes and isLiked status to localStorage whenever they change for this specific post
   useEffect(() => {
     localStorage.setItem(likeCountKey, likes);
     localStorage.setItem(likeStatusKey, JSON.stringify(isLiked));
@@ -57,7 +56,7 @@ function LikeButton({ postId, initialLikes, onLikeChange, isDarkMode }) {
 }
 
 LikeButton.propTypes = {
-  postId: PropTypes.number.isRequired, // Ensure postId is unique per blog post
+  postId: PropTypes.number.isRequired,
   initialLikes: PropTypes.number.isRequired,
   onLikeChange: PropTypes.func,
   isDarkMode: PropTypes.bool.isRequired,

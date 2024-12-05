@@ -1,13 +1,18 @@
-import { memo } from "react";
+// src/components/Pagination.jsx
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import styles from "./Pagination.module.css"; // Import CSS as a module
 
-const Pagination = memo(function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange,
-}) {
+const Pagination = memo(function Pagination({ currentPage, totalPages, onPageChange }) {
+  if (totalPages <= 1) return null; // Hide pagination if only one page exists
+
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  const handlePageClick = (pageNumber) => {
+    if (pageNumber !== currentPage) {
+      onPageChange(pageNumber);
+    }
+  };
 
   return (
     <div className={styles.pagination}>
@@ -15,6 +20,7 @@ const Pagination = memo(function Pagination({
         className={styles.paginationButton}
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        aria-label="Previous Page"
       >
         Previous
       </button>
@@ -22,10 +28,9 @@ const Pagination = memo(function Pagination({
         {pageNumbers.map((number) => (
           <button
             key={number}
-            className={`${styles.pageNumber} ${
-              number === currentPage ? styles.active : ""
-            }`}
-            onClick={() => onPageChange(number)}
+            className={`${styles.pageNumber} ${number === currentPage ? styles.active : ""}`}
+            onClick={() => handlePageClick(number)}
+            aria-label={`Page ${number}`}
           >
             {number}
           </button>
@@ -35,6 +40,7 @@ const Pagination = memo(function Pagination({
         className={styles.paginationButton}
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
+        aria-label="Next Page"
       >
         Next
       </button>

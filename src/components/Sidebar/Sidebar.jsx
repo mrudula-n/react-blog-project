@@ -1,25 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import styles from "./Sidebar.module.css";
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [recentPosts, setRecentPosts] = useState([]);
   const navigate = useNavigate();
 
-  const categories = [
-    "Technology",
-    "Lifestyle",
-    "Travel",
-    "Food",
-    "Programming",
-  ];
-
-  const recentPosts = [
-    { id: 1, title: "Getting Started with React" },
-    { id: 2, title: "Understanding React Router" },
-    { id: 3, title: "Mastering CSS Grid" },
-  ];
+  const categories = ["Technology", "Lifestyle", "Travel"];
 
   const navItems = [
     { path: "/", label: "Home" },
@@ -27,6 +15,13 @@ function Sidebar() {
     { path: "/posts/new", label: "New Post" },
     { path: "/profile", label: "Profile" },
   ];
+
+  // Load the latest posts from localStorage when the component mounts
+  useEffect(() => {
+    const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+    const sortedPosts = savedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    setRecentPosts(sortedPosts.slice(0, 5)); // Limit to the 5 most recent posts
+  }, []);
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);

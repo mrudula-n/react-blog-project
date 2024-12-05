@@ -1,3 +1,4 @@
+// src/pages/BlogList.jsx
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BlogList from "../components/BlogList/BlogList";

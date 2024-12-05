@@ -1,6 +1,7 @@
+// src/components/BlogSearch
 import { memo } from "react";
 import PropTypes from "prop-types";
-import styles from "./BlogSearch.module.css"; // Import CSS as a module
+import styles from "./BlogSearch.module.css";
 
 const BlogSearch = memo(function BlogSearch({ searchTerm, onSearch, resultCount }) {
   return (

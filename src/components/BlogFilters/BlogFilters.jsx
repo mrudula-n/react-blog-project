@@ -1,6 +1,7 @@
+// src/components/BlogFilters
 import { memo } from "react";
 import PropTypes from "prop-types";
-import styles from "./BlogFilters.module.css"; // Import CSS as a module
+import styles from "./BlogFilters.module.css";
 
 const BlogFilters = memo(function BlogFilters({
   filters,

@@ -1,8 +1,7 @@
-import Header from './components/Header';
-import BlogList from './components/BlogList/BlogList';
-import PostEditor from './components/PostEditor/PostEditor';
+// src/App.jsx
 import { posts as initialPosts } from './data/posts';
 import { RouterProvider } from 'react-router-dom';
+import { AuthProvider } from "./Context/AuthContext";
 import { router } from './router/index';
 import './App.css';
 import { useState } from 'react';
@@ -39,20 +38,9 @@ function App() {
 
   return (
     <div>
+      <AuthProvider>
       <RouterProvider router={router} />
-      {/* <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      <div className="new-post-container">
-        <button onClick={() => handleEdit()} className="new-post-button">
-          + New post
-        </button>
-      </div>
-      <main className="main-content">
-        {isEditing ? (
-          <PostEditor post={editingPost} isDarkMode={isDarkMode} onSave={handleSavePost} />
-        ) : (
-          <BlogList posts={posts} isDarkMode={isDarkMode} onEdit={handleEdit} />
-        )}
-      </main> */}
+    </AuthProvider>
     </div>
   );
 }

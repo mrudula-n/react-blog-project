@@ -1,48 +1,60 @@
-import { createBrowserRouter } from 'react-router-dom';
-import Layout from '../components/Layout/Layout';
-import Home from '../pages/Home';
-import Bloglist from '../pages/BlogList';
-import PostDetail from '../pages/PostDetail';
-import NewPost from '../pages/NewPost';
-import EditPost from '../pages/EditPost';
-import Profile from '../pages/Profile';
-import NotFound from '../pages/NotFound';
+// src/router/index.jsx
+import { createBrowserRouter } from "react-router-dom";
+import Layout from "../components/Layout/Layout";
+import Home from "../pages/Home";
+import Login from "../pages/Login";
+import Bloglist from "../pages/BlogList";
+import PostDetail from "../pages/PostDetail";
+import NewPost from "../pages/NewPost";
+import EditPost from "../pages/EditPost";
+import Profile from "../pages/Profile";
+import NotFound from "../pages/NotFound";
+
+const requireAuth = (element, isAuthenticated) => {
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  return element;
+};
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     errorElement: <NotFound />,
     children: [
       {
         index: true,
-        element: <Home />
+        element: <Home />,
       },
+
+      { path: "login", element: <Login /> },
+
       {
-        path: 'posts',
+        path: "posts",
         children: [
           {
             index: true,
-            element: <Bloglist />
+            element: <Bloglist />,
           },
           {
-            path: ':id',
-            element: <PostDetail />
+            path: ":id",
+            element: <PostDetail />,
           },
           {
-            path: 'new',
-            element: <NewPost />
+            path: "new",
+            element: <NewPost />,
           },
           {
-            path: ':id/edit',
-            element: <EditPost />
-          }
-        ]
+            path: ":id/edit",
+            element: <EditPost />,
+          },
+        ],
       },
       {
-        path: 'profile',
-        element: <Profile />
-      }
-    ]
-  }
+        path: "profile",
+        element: <Profile />,
+      },
+    ],
+  },
 ]);

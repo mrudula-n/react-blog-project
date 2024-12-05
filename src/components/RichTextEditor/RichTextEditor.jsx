@@ -1,3 +1,4 @@
+// src/components/RichTextEditor
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "./RichTextEditor.module.css";
