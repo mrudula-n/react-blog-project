@@ -6,10 +6,10 @@ import TagInput from "../TagInput/TagInput";
 import styles from "./PostEditor.module.css";
 import BlogPost from "../BlogPost/BlogPost";
 import RichTextEditor from "../RichTextEditor/RichTextEditor";
+import { useBlog } from "../../contexts/BlogContext";
 
-function PostEditor({ post = {}, isDarkMode }) {
-  const [formData, setFormData] = useState({
-    id: undefined,
+const initialState = {
+  id: undefined,
     title: "",
     content: "",
     author: "",
@@ -17,19 +17,26 @@ function PostEditor({ post = {}, isDarkMode }) {
     category: "general",
     isPublished: false,
     image: null,
+};
+
+function PostEditor({ post = {}, isDarkMode }) {
+  const [formData, setFormData] = useState({
+    ...initialState
   });
+  const { state } = useBlog();
+  const { posts, isLoading, error } = state;
 
   const [errors, setErrors] = useState({});
   const [isDirty, setIsDirty] = useState(false);
   const navigate = useNavigate();
+  const { dispatch } = useBlog();
+
+  console.log(post, 'posts');
 
   useEffect(() => {
-    const savedDraft = JSON.parse(localStorage.getItem("postDraft"));
-    if (savedDraft) {
-      setFormData(savedDraft);
-    } else if (post) {
+    if (post) {
       setFormData({
-        id: post.id,
+        id: post?.id,
         title: post.title || "",
         content: post.content || "",
         author: post.author || "",
@@ -39,7 +46,7 @@ function PostEditor({ post = {}, isDarkMode }) {
         image: post.image || null,
       });
     }
-  }, []);
+  }, [post]);
 
   const validateField = (name, value) => {
     switch (name) {
@@ -112,6 +119,8 @@ function PostEditor({ post = {}, isDarkMode }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
+  
+    // Validate all fields
     Object.keys(formData).forEach((key) => {
       const error = validateField(key, formData[key]);
       if (error) newErrors[key] = error;
@@ -119,44 +128,37 @@ function PostEditor({ post = {}, isDarkMode }) {
     setErrors(newErrors);
   
     if (Object.keys(newErrors).length === 0) {
-      const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-  
-      // Check if the post exists based on its id
-
-      const existingPostIndex = savedPosts.findIndex((p) => p.id === formData.id);
-      console.log(JSON.stringify(formData, null, 2), existingPostIndex, '7483', JSON.stringify(savedPosts, null, 2))
-  
-      if (existingPostIndex !== -1) {
-        // Update the existing post
-        savedPosts[existingPostIndex] = {
-          ...savedPosts[existingPostIndex], // Ensure original properties are retained
-          ...formData,
-          date: new Date().toISOString(),
-        };
-      } else {
-        // Add a new post
-        savedPosts.push({
-          ...formData,
-          id: formData.id || Date.now(), // Ensure id is set
-          date: new Date().toISOString(),
+      // Check if the post exists
+      if (formData.id) {
+        // Update existing post
+        dispatch({
+          type: "UPDATE_POST",
+          payload: {
+            ...formData,
+            date: new Date().toISOString(),
+          },
         });
+        alert("Post updated successfully!");
+      } else {
+        // Add new post
+        dispatch({
+          type: "ADD_POST",
+          payload: {
+            ...formData,
+            id: Date.now(), // Generate an ID for new posts
+            date: new Date().toISOString(),
+          },
+        });
+        alert("Post published successfully!");
       }
   
-      // Save updated posts to localStorage
-      localStorage.setItem("posts", JSON.stringify(savedPosts));
+      // Remove the draft and navigate
       localStorage.removeItem("postDraft");
-  
-      alert(
-        existingPostIndex !== -1
-          ? "Post updated successfully!"
-          : "Post published successfully!"
-      );
       navigate("/");
     } else {
       alert("Please fix the errors before publishing.");
     }
   };
-  
 
   return (
     <div className={styles.post_editor_container}>

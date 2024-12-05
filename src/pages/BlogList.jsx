@@ -2,11 +2,12 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BlogList from "../components/BlogList/BlogList";
-import { posts as initialPosts } from "../data/posts";
 import styles from "./Home.module.css";
+import { useBlog } from "../contexts/BlogContext";
 
 function Bloglist() {
-  const [posts, setPosts] = useState([]);
+  const { state } = useBlog();
+  const { posts, isLoading, error } = state;
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
@@ -14,20 +15,6 @@ function Bloglist() {
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  // Load posts from localStorage or initialize with default posts
-  useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    const mergedPosts = [
-      ...savedPosts,
-      ...initialPosts.filter(
-        (initialPost) =>
-          !savedPosts.some((savedPost) => savedPost.id === initialPost.id)
-      ),
-    ];
-    localStorage.setItem("posts", JSON.stringify(mergedPosts));
-    setPosts(mergedPosts);
-  }, []);
 
   // Sync filtered posts with query parameters
   useEffect(() => {
@@ -55,6 +42,8 @@ function Bloglist() {
       return matchesCategory && matchesAuthor && matchesTag && matchesSearch;
     });
 
+    console.log('filtered', filtered);
+
     setFilteredPosts(filtered);
   }, [location.search, posts]);
 
@@ -77,9 +66,8 @@ function Bloglist() {
     <div className={styles.home}>
       <main className={styles.mainContent}>
         <BlogList
-          posts={filteredPosts}
+          filteredPosts={filteredPosts}
           isDarkMode={isDarkMode}
-          onFilterChange={handleFilterChange}
         />
       </main>
     </div>

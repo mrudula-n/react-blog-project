@@ -24,7 +24,9 @@ function CommentSection({ postId }) {
 
   // Save comments to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(comments));
+    if (comments.length > 0) {
+      localStorage.setItem(localStorageKey, JSON.stringify(comments));
+    }
   }, [comments, localStorageKey]);
 
   const handleSubmit = (e) => {
