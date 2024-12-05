@@ -9,11 +9,12 @@ import { Oval } from "react-loader-spinner";
 import PropTypes from "prop-types";
 import styles from "./BlogList.module.css";
 import { useBlog } from "../../contexts/BlogContext";
+import AnimatedList from "../../components/AnimatedList/AnimatedList";
+import LoadingState from "../LoadingState/LoadingState";
 
 const POSTS_PER_PAGE = 5;
 
-function BlogList({ isDarkMode, onFilterChange }) {
-  // Use the Blog Context to get posts
+function BlogList({ isDarkMode, onFilterChange, filteredPosts }) {
   const { state } = useBlog();
   const { posts, isLoading, error } = state;
 
@@ -24,7 +25,9 @@ function BlogList({ isDarkMode, onFilterChange }) {
     categories,
     authors,
     allTags,
-  } = useFilters(posts);
+  } = useFilters(filteredPosts || posts);
+
+  console.log(filteredItems, 'Bloglist component', filteredPosts, posts);
 
   const {
     searchTerm,
@@ -69,21 +72,24 @@ function BlogList({ isDarkMode, onFilterChange }) {
         />
       </div>
       <div className={styles.blogList}>
-        {isLoading ? (
-          <div className={styles.loading}>
-            <Oval color="#00BFFF" height={50} width={50} />
-          </div>
-        ) : currentPosts.length > 0 ? (
+        {isLoading ?
+          <LoadingState count={3}/>: currentPosts.length > 0 ? (
           <>
             <div className={styles.blogPosts}>
-              {currentPosts.map((post) => (
+              <AnimatedList items={currentPosts} renderItem={(post) => <BlogPost
+                  key={post.id}
+                  {...post}
+                  isDarkMode={isDarkMode}
+                  searchTerm={searchTerm}
+                /> }/>
+              {/* {currentPosts.map((post) => (
                 <BlogPost
                   key={post.id}
                   {...post}
                   isDarkMode={isDarkMode}
                   searchTerm={searchTerm}
                 />
-              ))}
+              ))} */}
             </div>
             <Pagination
               currentPage={currentPage}
@@ -108,6 +114,7 @@ function BlogList({ isDarkMode, onFilterChange }) {
 BlogList.propTypes = {
   isDarkMode: PropTypes.bool.isRequired,
   onFilterChange: PropTypes.func,
+  filteredPosts: PropTypes.array,
 };
 
 export default BlogList;

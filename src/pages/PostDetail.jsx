@@ -3,16 +3,18 @@ import { useState, useEffect } from "react";
 import BlogPost from "../components/BlogPost/BlogPost";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
+import { useBlog } from "../contexts/BlogContext";
 
 function PostDetail() {
   const { id } = useParams();
+  const { state } = useBlog();
+  const { posts, isLoading, error } = state;
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    const foundPost = savedPosts.find((p) => p.id === parseInt(id, 10));
-    console.log('found post', id,  foundPost, JSON.stringify(savedPosts, null, 2))
+    const foundPost = posts.find((p) => p.id === parseInt(id, 10));
+    console.log('found post', id,  foundPost, JSON.stringify(posts, null, 2))
     if (foundPost) {
       setPost(foundPost);
     } else {

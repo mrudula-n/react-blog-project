@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import styles from "./Sidebar.module.css";
+import { useBlog } from "../../contexts/BlogContext";
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [recentPosts, setRecentPosts] = useState([]);
   const navigate = useNavigate();
+  const { state } = useBlog();
+  const { posts, isLoading, error } = state;
 
   const categories = ["Technology", "Lifestyle", "Travel"];
 
@@ -18,10 +21,14 @@ function Sidebar() {
 
   // Load the latest posts from localStorage when the component mounts
   useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    const sortedPosts = savedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const savedPosts = posts || [];
+    console.log(savedPosts, 'savedPosts');
+    // Ensure savedPosts is an array
+    const postsArray = Array.isArray(savedPosts) ? savedPosts : [];
+    const sortedPosts = postsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
     setRecentPosts(sortedPosts.slice(0, 5)); // Limit to the 5 most recent posts
-  }, []);
+  }, [posts]);
+  
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);

@@ -120,7 +120,7 @@ function PostManager() {
             <div className={styles.comments}>
               <h3>Comments</h3>
               <ul>
-                {post.comments.map((comment) => (
+                {post?.comments?.map((comment) => (
                   <li key={comment.id}>
                     {comment.text} -{" "}
                     <small>{new Date(comment.createdAt).toLocaleString()}</small>
