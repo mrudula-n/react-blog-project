@@ -56,7 +56,7 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
       case "tags":
         return value.length === 0 ? "At least one tag is required" : "";
       case "image":
-        return value
+        return value && !value.startsWith("blob:")
           ? "Invalid image format"
           : "";
       default:
@@ -126,10 +126,7 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
 
   return (
     <div className={styles.post_editor_container}>
-      <form
-        onSubmit={handleSubmit}
-        className={`${styles.post_editor} ${isDarkMode ? styles.dark : ""}`}
-      >
+      <form onSubmit={handleSubmit} className={`${styles.post_editor} ${isDarkMode ? styles.dark : ""}`}>
         <div className={styles.form_group}>
           <label htmlFor="title" className={styles.form_label}>
             Title *
@@ -144,13 +141,11 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             className={`${styles.input_field} ${errors.title ? styles.error : ""}`}
             placeholder="Enter post title..."
           />
-          {errors.title && (
-            <span className={styles.error_message}>{errors.title}</span>
-          )}
+          {errors.title && <span className={styles.error_message}>{errors.title}</span>}
         </div>
 
         <div className={styles.form_group}>
-          <label htmlFor="author" className={styles.form_label}>
+          <label htmlFor="title" className={styles.form_label}>
             Author *
           </label>
           <input
@@ -163,9 +158,7 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             className={`${styles.input_field} ${errors.author ? styles.error : ""}`}
             placeholder="Enter post author..."
           />
-          {errors.author && (
-            <span className={styles.error_message}>{errors.author}</span>
-          )}
+          {errors.author && <span className={styles.error_message}>{errors.author}</span>}
         </div>
 
         <div className={styles.form_group}>
@@ -179,15 +172,13 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             onChange={(value) =>
               setFormData((prev) => ({ ...prev, content: value }))
             }
-            onBlur={handleBlur}
+            onBlur={(e) => handleBlur(e)}
             className={`${styles.input_field} ${errors.content ? styles.error : ""}`}
             placeholder="Write your content here..."
             rows="10"
             error={errors.content}
           />
-          {errors.content && (
-            <span className={styles.error_message}>{errors.content}</span>
-          )}
+          {errors.content && <span className={styles.error_message}>{errors.content}</span>}
         </div>
 
         <TagInput
@@ -231,9 +222,7 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             onChange={handleChange}
             className={styles.input_field}
           />
-          {errors.image && (
-            <span className={styles.error_message}>{errors.image}</span>
-          )}
+          {errors.image && <span className={styles.error_message}>{errors.image}</span>}
           {formData.image && (
             <img src={formData.image} alt="Preview" className={styles.image_preview} />
           )}
@@ -255,7 +244,7 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
           {formData.isPublished ? "Publish Post" : "Save Draft"}
         </button>
       </form>
-      <div style={{ display: "flex", flex: 1 }}>
+      <div style={{ display: 'flex', flex: 1 }}>
         <BlogPost
           key={formData?.id}
           id={formData?.id}

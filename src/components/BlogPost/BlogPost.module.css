@@ -1,5 +1,5 @@
 .blogPost {
-  max-width: 800px;
+  max-width: 800px;     
   flex: 1;
   padding: 1.5rem;
   border-radius: 8px;
@@ -15,6 +15,18 @@
   font-size: 2rem;
   color: #2c3e50;
   margin-bottom: 0.5rem;
+}
+
+mark {
+  background-color: yellow;
+  color: inherit;
+  font-weight: bold;
+}
+
+.highlight {
+  background-color: yellow;
+  color: inherit;
+  font-weight: bold;
 }
 
 .blogPost__meta {
@@ -42,15 +54,14 @@
 
 .toggleButton:hover {
   background-color: #0056b3;
-}
+}  
 
 .blogPostImage {
   width: 100%;
-  /* max-height: 300px; */
-  object-fit: cover;
-  border-radius: 8px 8px 0 0;
+  object-fit: cover; 
+  border-radius: 8px 8px 0 0; 
   margin-bottom: 1rem;
-}
+}   
 
 .socialShare {
   display: flex;
@@ -76,7 +87,7 @@
 }
 
 .shareIcon:hover {
-  color: #007bff;
+  color: #007bff; 
 }
 
 .blogPost__meta {
@@ -99,6 +110,7 @@
   background-color: #0056b3;
 }
 
+
 .dark {
   background-color: #1e1e1e;
   color: #e0e0e0;
@@ -118,20 +130,20 @@
 }
 
 .dark .toggleButton {
-  background-color: #555;
-  color: #f8f8f8;
+  background-color: #555; 
+  color: #f8f8f8; 
 }
 
 .dark .toggleButton:hover {
-  background-color: #333;
+  background-color: #333; 
 }
 
 body.dark-mode .socialShare .shareIcon {
-  color: #fffefe;
+  color: #fffefe; 
 }
 
 body.dark-mode .socialShare .shareIcon:hover {
-  color: #66b2ff;
+  color: #66b2ff; 
 }
 
 @keyframes fadeIn {
@@ -143,7 +155,7 @@ body.dark-mode .socialShare .shareIcon:hover {
     opacity: 1;
     transform: translateY(0);
   }
-}
+}  
 
 .fadeIn {
   animation: fadeIn 0.5s ease-in-out;
@@ -152,25 +164,25 @@ body.dark-mode .socialShare .shareIcon:hover {
 /* Responsive Design */
 @media (max-width: 768px) {
   .blogPost {
-    padding: 1rem;
+    padding: 1rem;         
   }
 
   .blogPost__title {
-    font-size: 1.5rem;
+    font-size: 1.5rem;    
   }
 
   .blogPost__meta {
-    flex-direction: column;
+    flex-direction: column; 
     gap: 0.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .blogPost {
-    padding: 0.8rem;
-    max-width: 90%;
-    margin: 1rem auto;
-    padding: 1rem;
+    padding: 0.8rem;  
+    max-width: 90%;       
+    margin: 1rem auto;   
+    padding: 1rem;      
   }
 
   .blogPost__title {
