@@ -1,7 +1,7 @@
 .main-content {
-  display: flex;            /* Allows centering child items */
-  justify-content: center;   /* Centers child items horizontally */
-  align-items: center;       /* Centers child items vertically */
-  min-height: 100vh;         /* Optional: Center vertically on full screen */
+  display: flex;            
+  justify-content: center;   
+  align-items: center;       
+  min-height: 100vh;        
   padding: 2rem;
 }

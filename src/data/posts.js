@@ -7,6 +7,7 @@ export const posts = [
     author: "Jane Doe",
     date: "2024-03-15",
     readTime: 5,
+    image: "/images/image1.png"
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export const posts = [
     author: "John Smith",
     date: "2024-03-16",
     readTime: 3,
+    image: "/images/image2.png"
   },
   {
     id: 3,
@@ -25,6 +27,7 @@ export const posts = [
     author: "Amit Kumar",
     date: "2024-03-17",
     readTime: 5,
+    image: "/images/image3.png"
   },
   {
     id: 4,
@@ -34,5 +37,6 @@ export const posts = [
     author: "Alex Johnson",
     date: "2024-03-18",
     readTime: 4,
+    image: "/images/image4.png"
   },
 ];

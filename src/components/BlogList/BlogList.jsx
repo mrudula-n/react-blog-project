@@ -1,18 +1,21 @@
 import PropTypes from 'prop-types';
 import BlogPost from '../BlogPost/BlogPost';
-import styles from './BlogList.module.css';
+import './BlogList.module.css';
 
-function BlogList({ posts }) {
+function BlogList({ posts, isDarkMode }) {
   return (
-    <div className={styles.blogList}>
+    <div className="blog-list">
       {posts.map(post => (
         <BlogPost
           key={post.id}
+          id={post.id}  // Pass the unique post ID here
           title={post.title}
           content={post.content}
           author={post.author}
           date={post.date}
           readTime={post.readTime}
+          image={post.image} 
+          isDarkMode={isDarkMode}
         />
       ))}
     </div>
@@ -27,9 +30,10 @@ BlogList.propTypes = {
       content: PropTypes.string.isRequired,
       author: PropTypes.string.isRequired,
       date: PropTypes.string.isRequired,
-      readTime: PropTypes.number.isRequired
+      image: PropTypes.string, 
     })
-  ).isRequired
+  ).isRequired,
+  isDarkMode: PropTypes.bool.isRequired,
 };
 
 export default BlogList;

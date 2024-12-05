@@ -115,6 +115,52 @@ body.dark-mode .blog-header nav a:hover {
   color: #007bff;
 }
 
+@media print {
+  /* Hide non-essential elements */
+  body * {
+    visibility: hidden;
+  }
+
+  .main-content, .main-content * {
+    visibility: visible;
+  }
+
+  /* Hide the toggle switch and header */
+  .blog-header, .toggle-switch {
+    display: none;
+  }
+
+  /* Adjust background and layout */
+  body {
+    background-color: white !important;
+    color: black;
+  }
+
+  .blogPost {
+    width: 100% !important;
+    max-width: none;
+    box-shadow: none;
+    background: white;
+    color: black;
+    padding: 1rem;
+    border-radius: 0;
+  }
+
+  .blogPost__title {
+    font-size: 1.5em;
+  }
+
+  .blogPost__meta {
+    color: #333;
+    font-size: 0.9em;
+  }
+
+  .blogPost__content {
+    font-size: 1em;
+    line-height: 1.5;
+  }
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .blog-header {
