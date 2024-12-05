@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function Header({ isDarkMode, toggleDarkMode }) {
   return (
@@ -6,13 +6,17 @@ function Header({ isDarkMode, toggleDarkMode }) {
       <h1>My Awesome Blog</h1>
       <nav>
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
+          <li>
+            <a href="#home">Home</a>
+          </li>
+          <li>
+            <a href="#about">About</a>
+          </li>
         </ul>
       </nav>
 
       <div className="toggle-switch" onClick={toggleDarkMode}>
-        <div className={`slider ${isDarkMode ? 'dark' : ''}`}></div>
+        <div className={`slider ${isDarkMode ? "dark" : ""}`}></div>
       </div>
     </header>
   );

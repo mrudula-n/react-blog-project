@@ -1,8 +1,7 @@
 .blogList {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    width: 1200px;
-    align-items: center;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: "yellow";
+  align-items: center;
+}

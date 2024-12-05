@@ -9,24 +9,22 @@
     color: #333;
   }
   
-  .comment-form {
-    margin-top: 1rem;
+  .textareaContainer {
     display: flex;
-    flex-direction: column;
-    position: relative;
+    flex: 1;
   }
   
-  .comment-form__input {
-    width: 100%; /* Increase width */
-    max-width: 700px; /* Set a maximum width if needed */
+  .commentForm__input {
+    flex: 1;
+    min-width: 150px;
+    max-width: 700px;
     padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: none;
     font-size: 1rem;
-    min-height: 150px; /* Increase height */
+    min-height: 80px; /* Increase height */
   }
-  
   
   .comment-form__submit {
     background-color: #007bff;
@@ -148,7 +146,7 @@
   .comments-list .comment.enter-active {
     opacity: 1;
     transform: translateY(0);
-  }  
+  }
   
   /* Dark mode adjustments */
   body.dark-mode .comment-section h3 {
@@ -196,4 +194,3 @@
     color: #f5f5f5;
     border-color: #666;
   }
-  
