@@ -1,3 +1,4 @@
+// src/components/BlogPost
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa";

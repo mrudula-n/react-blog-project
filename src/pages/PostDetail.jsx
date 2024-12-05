@@ -1,3 +1,4 @@
+// src/pages/PostDetail.jsx
 import { useState, useEffect } from "react";
 import BlogPost from "../components/BlogPost/BlogPost";
 import { useParams, useNavigate } from "react-router-dom";

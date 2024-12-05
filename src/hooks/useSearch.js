@@ -1,3 +1,4 @@
+// src/hook/useSearch.js
 import { useState, useEffect, useMemo, useCallback } from 'react';
 
 export function useSearch(items, searchFields = ['title', 'content']) {

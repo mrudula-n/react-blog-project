@@ -1,3 +1,4 @@
+// src/pages/Home.jsx
 import { useState, useEffect } from 'react';
 import BlogList from '../components/BlogList/BlogList';
 import { posts as initialPosts } from '../data/posts';

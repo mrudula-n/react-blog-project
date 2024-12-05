@@ -1,3 +1,4 @@
+// src/pages/EditPost.jsx
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PostEditor from "../components/PostEditor/PostEditor";

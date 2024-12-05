@@ -191,3 +191,41 @@ I used **CSS Modules** for styling. This approach provides locally scoped styles
 
 #### Mobile
 ![alt text](image-8.png)
+
+## Assignment 6
+
+### New Features
+1. Data Management (usePosts)
+- CRUD Operations: Add, update, delete posts.
+- Likes & Comments: Increment likes and add comments with metadata.
+- Persistent Storage: Syncs posts with localStorage.
+- State Management: Handles loading and error states.
+2. Form Management (useForm)
+- State Handling: Manages form values, errors, and touched fields.
+- Validation: Validates fields on blur and the entire form on submit.
+- Reusable Handlers: Provides onChange, onBlur, and onSubmit.
+3. Authentication (useAuth)
+- User Management: Login, logout, and profile update.
+- Persistent User Data: Syncs user data with localStorage.
+- Auth State: Tracks authentication and loading states.
+4. Theme Management (useTheme)
+- Dark/Light Modes: Toggles between themes.
+- Persistent Theme: Syncs theme preference with localStorage.
+- Dynamic Application: Applies theme to the document.
+5. Pagination (usePagination)
+- Paginated Items: Splits data into pages.
+- Navigation: Provides next, previous, and specific page navigation.
+- Pagination Info: Tracks current and total pages.
+6. Testing
+- Unit Tests: Validates functionality of usePosts.
+- Behavior Testing: Tests edge cases and state updates.
+
+#### Screenshots
+![alt text](image-9.png)
+![alt text](image-10.png)
+![alt text](image-11.png)
+![alt text](image-12.png)
+![alt text](localhost_5173_.png)
+![alt text](<Test Cases.png>)
+![alt text](<Post Manager.png>)
+![alt text](<Form example.png>)

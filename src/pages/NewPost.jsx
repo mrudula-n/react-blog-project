@@ -1,3 +1,4 @@
+// src/pages/NewPost.jsx
 import PostEditor from "../components/PostEditor/PostEditor";
 
 function NewPost() {

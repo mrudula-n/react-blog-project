@@ -1,3 +1,4 @@
+// src/components/TagInput
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './TagInput.module.css';
