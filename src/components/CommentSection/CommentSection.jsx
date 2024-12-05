@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import "./CommentSection.module.css";
+import styles from "./CommentSection.module.css";
 
 function CommentSection({ postId }) {
   const [comments, setComments] = useState([]);
@@ -16,7 +16,8 @@ function CommentSection({ postId }) {
 
   // Load comments from localStorage on mount
   useEffect(() => {
-    const storedComments = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    const storedComments =
+      JSON.parse(localStorage.getItem(localStorageKey)) || [];
     setComments(storedComments);
   }, [localStorageKey]);
 
@@ -101,9 +102,9 @@ function CommentSection({ postId }) {
 
   const renderComments = () => {
     return sortedComments.map((comment) => (
-      <div key={comment.id} className="comment">
+      <div key={comment.id} className={styles.comment}>
         <p>{comment.text}</p>
-        <span className="comment__timestamp">
+        <span className={styles.comment__timestamp}>
           {moment(comment.timestamp).format("Do MMM YYYY HH:mm:ss")}
         </span>
         <button onClick={() => handleEdit(comment.id, comment.text)}>
@@ -112,12 +113,12 @@ function CommentSection({ postId }) {
         <button onClick={() => handleReply(comment.id)}>Reply</button>
 
         {/* Render replies */}
-        <div className="replies">
+        <div className={styles.replies}>
           {comment.replies &&
             comment.replies.map((reply) => (
-              <div key={reply.id} className="reply">
+              <div key={reply.id} className={styles.reply}>
                 <p>{reply.text}</p>
-                <span className="comment__timestamp">
+                <span className={styles.comment__timestamp}>
                   {moment(reply.timestamp).format("Do MMM YYYY HH:mm:ss")}
                 </span>
               </div>
@@ -128,10 +129,10 @@ function CommentSection({ postId }) {
   };
 
   return (
-    <div className="comment-section">
+    <div className={styles.commentSection}>
       <h3>Leave a comment</h3>
-      <form onSubmit={handleSubmit} className="comment-form">
-        <div className="textarea-container">
+      <form onSubmit={handleSubmit}>
+        <div className={styles.textareaContainer}>
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
@@ -142,29 +143,38 @@ function CommentSection({ postId }) {
                 ? "Write a reply..."
                 : "Write a comment..."
             }
-            className="comment-form__input"
-            rows="4"
+            className={styles.commentForm__input}
+            rows="3"
           />
         </div>
-        <button type="submit" disabled={!newComment.trim()} className="comment-form__submit">
+        <button
+          type="submit"
+          disabled={!newComment.trim()}
+          className={styles.commentForm__submit}
+        >
           {editCommentId ? "Update" : replyCommentId ? "Reply" : "Comment"}
         </button>
       </form>
 
-      <div className="sort-options">
+      <div className={styles.sortOptions}>
         <label>Sort by: </label>
-        <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+        <select
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+        >
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
           <option value="mostReplies">Most Replies</option>
         </select>
       </div>
 
-      <button onClick={toggleShowComments} className="toggle-comments-btn">
+      <button onClick={toggleShowComments} className={styles.toggleCommentsBtn}>
         {hideComment ? "Show comments" : "Hide comments"}
       </button>
 
-      {!hideComment && <div className="comments-list">{renderComments()}</div>}
+      {!hideComment && (
+        <div className={styles.commentsList}>{renderComments()}</div>
+      )}
     </div>
   );
 }

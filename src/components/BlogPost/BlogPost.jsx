@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
 import styles from "./BlogPost.module.css";
 import LikeButton from "../LikeButton/LikeButton";
 import CommentSection from "../CommentSection/CommentSection";
 import { calculateReadTime } from "../../utils/readTime";
 
-function BlogPost({ id, title, content, author, date, image, isDarkMode }) {
+function BlogPost({
+  id,
+  title,
+  content,
+  author,
+  date,
+  image,
+  isDarkMode,
+  onEdit,
+  isPreview = false,
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [readTime, setReadTime] = useState(0);
 
@@ -18,6 +29,7 @@ function BlogPost({ id, title, content, author, date, image, isDarkMode }) {
     setIsExpanded(!isExpanded);
   };
 
+  // Only render a truncated version if not expanded
   const displayContent = isExpanded
     ? content
     : content.slice(0, 200) + (content.length > 200 ? "..." : "");
@@ -34,13 +46,18 @@ function BlogPost({ id, title, content, author, date, image, isDarkMode }) {
           <time className={styles.blogPost__date}>{date}</time>
           <span className={styles.blogPost__readTime}>{readTime} min read</span>
         </div>
+        {/* {onEdit && (
+          <button onClick={onEdit} className={styles.editPostButton}>
+            Edit Post
+          </button>
+        )} */}
       </div>
       <div
         className={`${styles.blogPost__content} ${
           isExpanded ? styles.expanded : ""
         }`}
       >
-        {displayContent}
+        <ReactMarkdown>{displayContent}</ReactMarkdown>
       </div>
       <button
         className={styles.toggleButton}
@@ -49,49 +66,52 @@ function BlogPost({ id, title, content, author, date, image, isDarkMode }) {
       >
         {isExpanded ? "Read Less" : "Read More"}
       </button>
-      {/* Like Button */}
-      <LikeButton postId={id} initialLikes={0} isDarkMode={isDarkMode} />
-      {/* Comment Section */}
-      <CommentSection postId={id} />{" "}
-      {/* Pass unique postId to CommentSection */}
-      <div className={styles.socialShare}>
-        <a
-          href="https://www.whatsapp.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Share on WhatsApp"
-        >
-          <FaWhatsapp className={styles.shareIcon} />
-        </a>
-        <a
-          href="https://in.linkedin.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Share on LinkedIn"
-        >
-          <FaLinkedin className={styles.shareIcon} />
-        </a>
-        <a
-          href="https://www.instagram.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visit Instagram"
-        >
-          <FaInstagram className={styles.shareIcon} />
-        </a>
-      </div>
+      {!isPreview && (
+        <>
+          <LikeButton postId={id} initialLikes={0} isDarkMode={isDarkMode} />
+          <CommentSection postId={id} />
+          <div className={styles.socialShare}>
+            <a
+              href="https://www.whatsapp.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on WhatsApp"
+            >
+              <FaWhatsapp className={styles.shareIcon} />
+            </a>
+            <a
+              href="https://in.linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on LinkedIn"
+            >
+              <FaLinkedin className={styles.shareIcon} />
+            </a>
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Instagram"
+            >
+              <FaInstagram className={styles.shareIcon} />
+            </a>
+          </div>
+        </>
+      )}
     </article>
   );
 }
 
 BlogPost.propTypes = {
-  id: PropTypes.number.isRequired, // Ensure postId is passed as a unique id for each blog post
+  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   image: PropTypes.string,
   isDarkMode: PropTypes.bool.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  isPreview: PropTypes.bool,
 };
 
 export default BlogPost;
