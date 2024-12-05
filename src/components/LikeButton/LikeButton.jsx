@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { FaHeart } from "react-icons/fa";
-import styles from "./LikeButton.module.css";
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { FaHeart } from 'react-icons/fa';
+import styles from './LikeButton.module.css';
 
 function LikeButton({ postId, initialLikes, onLikeChange, isDarkMode }) {
-  const likeCountKey = `likes-${postId}`; // Unique key for the likes count of each post
-  const likeStatusKey = `isLiked-${postId}`; // Unique key for the like status of each post
+  const likeCountKey = `likes-${postId}`;  // Unique key for the likes count of each post
+  const likeStatusKey = `isLiked-${postId}`;  // Unique key for the like status of each post
 
   // Retrieve persisted like state for this specific postId from localStorage
   const [likes, setLikes] = useState(() => {
@@ -38,22 +38,18 @@ function LikeButton({ postId, initialLikes, onLikeChange, isDarkMode }) {
 
   return (
     <button
-      className={`${styles.likeButton} ${isLiked ? styles.liked : ""}`}
+      className={`${styles.likeButton} ${isLiked ? styles.liked : ''}`}
       onClick={handleLikeClick}
-      aria-label={isLiked ? "Unlike post" : "Like post"}
+      aria-label={isLiked ? 'Unlike post' : 'Like post'}
     >
-      <div
-        className={`${styles.iconContainer} ${isDarkMode ? styles.darkIconContainer : ""}`}
-      >
+      <div className={`${styles.iconContainer} ${isDarkMode ? styles.darkIconContainer : ''}`}>
         <FaHeart
           className={`${styles.likeIcon} ${
             isLiked ? styles.likedIcon : styles.unlikedIcon
-          } ${isDarkMode && !isLiked ? styles.darkUnlikedIcon : ""}`}
+          } ${isDarkMode && !isLiked ? styles.darkUnlikedIcon : ''}`}
         />
       </div>
-      <span
-        className={`${styles.likeCount} ${isDarkMode ? styles.darkLikeCount : ""}`}
-      >
+      <span className={`${styles.likeCount} ${isDarkMode ? styles.darkLikeCount : ''}`}>
         {likes}
       </span>
     </button>

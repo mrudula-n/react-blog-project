@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import styles from "./BlogPost.module.css";
 import LikeButton from "../LikeButton/LikeButton";
@@ -10,17 +11,17 @@ import { calculateReadTime } from "../../utils/readTime";
 function BlogPost({
   id,
   title,
-  content,
+  content = "",
   author,
   date,
   image,
   isDarkMode,
-  // onEdit,
   isPreview = false,
   searchTerm,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [readTime, setReadTime] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setReadTime(calculateReadTime(content));
@@ -32,7 +33,7 @@ function BlogPost({
 
   const displayContent = isExpanded
     ? content
-    : content.slice(0, 200) + (content.length > 200 ? "..." : "");
+    : content?.slice(0, 200) + (content?.length > 200 ? "..." : "");
 
   const highlightText = (text, term) => {
     if (!term || !text) return text;
@@ -80,6 +81,15 @@ function BlogPost({
           <span className={styles.blogPost__readTime}>{readTime} min read</span>
         </div>
       </div>
+      {!isPreview && (
+        <button
+          className={styles.toggleButton}
+          onClick={() => navigate(`/posts/${id}/edit`)}
+          aria-expanded={isExpanded}
+        >
+          Edit
+        </button>
+      )}
       <div
         className={`${styles.blogPost__content} ${
           isExpanded ? styles.expanded : ""
@@ -195,7 +205,6 @@ BlogPost.propTypes = {
   date: PropTypes.string.isRequired,
   image: PropTypes.string,
   isDarkMode: PropTypes.bool.isRequired,
-  onEdit: PropTypes.func.isRequired,
   isPreview: PropTypes.bool,
   searchTerm: PropTypes.string,
 };

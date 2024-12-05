@@ -1,49 +1,48 @@
 .blogFilters {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 1rem;
-    font-family: Arial, sans-serif;
-  }
-  
-  .filterGroup {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .filterGroup label {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .filterGroup select {
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  
-  .filterGroup select:focus {
-    border-color: #007bff;
-  }
-  
-  .tagsFilter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .tagCheckbox {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.9rem;
-  }
-  
-  .tagCheckbox input {
-    margin: 0;
-    cursor: pointer;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.filterGroup label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.filterGroup select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.filterGroup select:focus {
+  border-color: #007bff;
+}
+
+.tagsFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tagCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.tagCheckbox input {
+  margin: 0;
+  cursor: pointer;
+}

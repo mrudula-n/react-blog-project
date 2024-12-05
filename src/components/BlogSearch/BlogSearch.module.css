@@ -1,36 +1,36 @@
 .blogSearch {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    font-family: Arial, sans-serif;
-  }
-  
-  .searchInputWrapper {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-  }
-  
-  .searchInput {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
-    outline: none;
-  }
-  
-  .searchInput:focus {
-    border-color: #007bff;
-  }
-  
-  .searchResultsCount {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-    color: #555;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.searchInputWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: #007bff;
+}
+
+.searchResultsCount {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #555;
+}

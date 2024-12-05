@@ -1,0 +1,124 @@
+/* General Sidebar Styles */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: -250px;
+  background-color: #f9f9f9;
+  border-left: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  z-index: 1005;
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+
+.sidebar--open {
+  right: 0; /* Slide into view */
+}
+
+.sidebar__section {
+  padding: 20px;
+}
+
+.sidebar__title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.sidebar__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar__item {
+  margin-bottom: 10px;
+}
+
+.sidebar__link {
+  display: inline-block;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+  text-align: left;
+  color: #007bff;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar__link:hover {
+  background-color: #e7f1ff;
+  color: #0056b3;
+}
+
+.sidebar__link:focus {
+  outline: 2px solid #007bff;
+  background-color: #e7f1ff;
+}
+
+/* Toggle Button for Mobile */
+.sidebarToggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  /* padding: 10px 15px; */
+  font-size: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.sidebar__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Overlay for Sidebar */
+.sidebar__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+  .sidebarToggle {
+    display: none; /* Hide toggle button on larger screens */
+  }
+
+  .sidebar {
+    position: static;
+    width: 250px;
+    height: auto;
+    border: none;
+    z-index: 1000;
+    box-shadow: none;
+  }
+
+  .sidebar--open {
+    right: auto;
+  }
+
+  .sidebar__overlay {
+    display: none;
+  }
+}

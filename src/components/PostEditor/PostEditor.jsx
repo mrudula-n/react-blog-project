@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import TagInput from "../TagInput/TagInput";
 import styles from "./PostEditor.module.css";
 import BlogPost from "../BlogPost/BlogPost";
 import RichTextEditor from "../RichTextEditor/RichTextEditor";
 
-function PostEditor({ post = {}, onSave, isDarkMode }) {
+function PostEditor({ post = {}, isDarkMode }) {
   const [formData, setFormData] = useState({
+    id: undefined,
     title: "",
     content: "",
     author: "",
@@ -17,17 +19,16 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
   });
 
   const [errors, setErrors] = useState({});
-  const [isDirty, setIsDirty] = useState({});
+  const [isDirty, setIsDirty] = useState(false);
+  const navigate = useNavigate();
 
-  // Load draft data from localStorage if available; else load from post prop
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("postDraft"));
-    if (savedData) {
-      console.log('savedData if condition');
-      setFormData(savedData);
+    const savedDraft = JSON.parse(localStorage.getItem("postDraft"));
+    if (savedDraft) {
+      setFormData(savedDraft);
     } else if (post) {
-      console.log('savedData else condition');
       setFormData({
+        id: post.id,
         title: post.title || "",
         content: post.content || "",
         author: post.author || "",
@@ -37,7 +38,7 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
         image: post.image || null,
       });
     }
-  }, [post]);
+  }, []);
 
   const validateField = (name, value) => {
     switch (name) {
@@ -55,10 +56,6 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
           : "";
       case "tags":
         return value.length === 0 ? "At least one tag is required" : "";
-      case "image":
-        return value && !value.startsWith("blob:")
-          ? "Invalid image format"
-          : "";
       default:
         return "";
     }
@@ -85,17 +82,7 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
       [name]: newValue,
     }));
 
-    setIsDirty((prev) => ({
-      ...prev,
-      [name]: true,
-    }));
-
-    if (isDirty[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: validateField(name, newValue),
-      }));
-    }
+    setIsDirty(true);
   };
 
   const handleBlur = (e) => {
@@ -106,6 +93,12 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
     }));
   };
 
+  const saveAsDraft = () => {
+    localStorage.setItem("postDraft", JSON.stringify(formData));
+    alert("Draft saved!");
+    navigate("/");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -114,19 +107,53 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
       if (error) newErrors[key] = error;
     });
     setErrors(newErrors);
-
+  
     if (Object.keys(newErrors).length === 0) {
-      const postId = post?.id ?? null;
-      onSave({ ...formData, id: postId });
+      const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+  
+      // Check if the post exists based on its id
+
+      const existingPostIndex = savedPosts.findIndex((p) => p.id === formData.id);
+      console.log(JSON.stringify(formData, null, 2), existingPostIndex, '7483', JSON.stringify(savedPosts, null, 2))
+  
+      if (existingPostIndex !== -1) {
+        // Update the existing post
+        savedPosts[existingPostIndex] = {
+          ...savedPosts[existingPostIndex], // Ensure original properties are retained
+          ...formData,
+          date: new Date().toISOString(),
+        };
+      } else {
+        // Add a new post
+        savedPosts.push({
+          ...formData,
+          id: formData.id || Date.now(), // Ensure id is set
+          date: new Date().toISOString(),
+        });
+      }
+  
+      // Save updated posts to localStorage
+      localStorage.setItem("posts", JSON.stringify(savedPosts));
       localStorage.removeItem("postDraft");
+  
+      alert(
+        existingPostIndex !== -1
+          ? "Post updated successfully!"
+          : "Post published successfully!"
+      );
+      navigate("/");
     } else {
-      localStorage.setItem("postDraft", JSON.stringify(formData));
+      alert("Please fix the errors before publishing.");
     }
   };
+  
 
   return (
     <div className={styles.post_editor_container}>
-      <form onSubmit={handleSubmit} className={`${styles.post_editor} ${isDarkMode ? styles.dark : ""}`}>
+      <form
+        onSubmit={handleSubmit}
+        className={`${styles.post_editor} ${isDarkMode ? styles.dark : ""}`}
+      >
         <div className={styles.form_group}>
           <label htmlFor="title" className={styles.form_label}>
             Title *
@@ -138,14 +165,18 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             value={formData.title}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={`${styles.input_field} ${errors.title ? styles.error : ""}`}
+            className={`${styles.input_field} ${
+              errors.title ? styles.error : ""
+            }`}
             placeholder="Enter post title..."
           />
-          {errors.title && <span className={styles.error_message}>{errors.title}</span>}
+          {errors.title && (
+            <span className={styles.error_message}>{errors.title}</span>
+          )}
         </div>
 
         <div className={styles.form_group}>
-          <label htmlFor="title" className={styles.form_label}>
+          <label htmlFor="author" className={styles.form_label}>
             Author *
           </label>
           <input
@@ -155,10 +186,14 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             value={formData.author}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={`${styles.input_field} ${errors.author ? styles.error : ""}`}
+            className={`${styles.input_field} ${
+              errors.author ? styles.error : ""
+            }`}
             placeholder="Enter post author..."
           />
-          {errors.author && <span className={styles.error_message}>{errors.author}</span>}
+          {errors.author && (
+            <span className={styles.error_message}>{errors.author}</span>
+          )}
         </div>
 
         <div className={styles.form_group}>
@@ -170,26 +205,28 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             name="content"
             value={formData.content}
             onChange={(value) =>
-              setFormData((prev) => ({ ...prev, content: value }))
+              setFormData((prev) => ({
+                ...prev,
+                content: value,
+              }))
             }
-            onBlur={(e) => handleBlur(e)}
-            className={`${styles.input_field} ${errors.content ? styles.error : ""}`}
-            placeholder="Write your content here..."
-            rows="10"
-            error={errors.content}
+            className={`${styles.input_field} ${
+              errors.content ? styles.error : ""
+            }`}
           />
-          {errors.content && <span className={styles.error_message}>{errors.content}</span>}
+          {errors.content && (
+            <span className={styles.error_message}>{errors.content}</span>
+          )}
         </div>
 
         <TagInput
           tags={formData.tags}
           onChange={(tags) =>
-            handleChange({ target: { name: "tags", value: tags } })
+            setFormData((prev) => ({
+              ...prev,
+              tags,
+            }))
           }
-          onBlur={() =>
-            handleBlur({ target: { name: "tags", value: formData.tags } })
-          }
-          error={errors.tags}
         />
 
         <div className={styles.form_group}>
@@ -222,29 +259,33 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             onChange={handleChange}
             className={styles.input_field}
           />
-          {errors.image && <span className={styles.error_message}>{errors.image}</span>}
+          {errors.image && (
+            <span className={styles.error_message}>{errors.image}</span>
+          )}
           {formData.image && (
-            <img src={formData.image} alt="Preview" className={styles.image_preview} />
+            <img
+              src={formData.image}
+              alt="Preview"
+              className={styles.image_preview}
+            />
           )}
         </div>
 
-        <div className={`${styles.form_group} ${styles.checkbox}`}>
-          <label>
-            <input
-              type="checkbox"
-              name="isPublished"
-              checked={formData.isPublished}
-              onChange={handleChange}
-            />
-            Publish immediately
-          </label>
+        <div className={styles.actions}>
+          <button
+            type="button"
+            onClick={saveAsDraft}
+            className={styles.draft_button}
+          >
+            Save as Draft
+          </button>
+          <button type="submit" className={styles.submit_button}>
+            Publish Post
+          </button>
         </div>
-
-        <button type="submit" className={styles.submit_button}>
-          {formData.isPublished ? "Publish Post" : "Save Draft"}
-        </button>
       </form>
-      <div style={{ display: 'flex', flex: 1 }}>
+
+      <div style={{ display: "flex", flex: 1 }}>
         <BlogPost
           key={formData?.id}
           id={formData?.id}
@@ -263,7 +304,6 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
 
 PostEditor.propTypes = {
   post: PropTypes.object,
-  onSave: PropTypes.func.isRequired,
   isDarkMode: PropTypes.bool.isRequired,
 };
 

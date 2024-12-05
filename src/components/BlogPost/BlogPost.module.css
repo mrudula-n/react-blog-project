@@ -1,10 +1,13 @@
 .blogPost {
-  max-width: 800px;     
+  max-width: 800px; /* Limit the width of the blog post */
+  width: 100%; /* Ensure it adapts to its container */
+  margin: 0 auto; /* Center align the blog post */
   flex: 1;
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 1px 2px 4px 4px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.5s ease-in-out;
+  box-sizing: border-box; /* Include padding and border in width/height */
 }
 
 .blogPost__header {
@@ -36,9 +39,16 @@ mark {
   font-size: 0.9rem;
 }
 
-.blogPost__content {
-  line-height: 1.6;
-  color: #333;
+.blogPost {
+  max-width: 800px; /* Limit the width of the blog post */
+  width: 100%; /* Ensure it adapts to its container */
+  margin: 0 auto; /* Center align the blog post */
+  flex: 1;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 1px 2px 4px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+  box-sizing: border-box; /* Include padding and border in width/height */
 }
 
 .toggleButton {
@@ -57,10 +67,12 @@ mark {
 }  
 
 .blogPostImage {
-  width: 100%;
-  object-fit: cover; 
-  border-radius: 8px 8px 0 0; 
+  width: 100%; /* Image takes full width of its container */
+  max-width: 100%; /* Ensure it doesn't exceed the container width */
+  object-fit: cover; /* Ensure the image maintains aspect ratio */
+  border-radius: 8px 8px 0 0; /* Rounded corners for the top of the image */
   margin-bottom: 1rem;
+  display: block; /* Prevent inline spacing issues */
 }   
 
 .socialShare {
@@ -71,13 +83,12 @@ mark {
 }
 
 .blogPost__content {
-  /* max-height: 300px; */
   overflow: hidden;
   transition: max-height 0.5s ease;
 }
 
 .blogPost__content.expanded {
-  max-height: 1000px; /* Or a high enough value to reveal all content */
+  max-height: 1000px;
 }
 
 .shareIcon {
@@ -91,7 +102,7 @@ mark {
 }
 
 .blogPost__meta {
-  margin-bottom: 0.5rem; /* Add spacing between meta details and Edit Post button */
+  margin-bottom: 0.5rem; 
 }
 
 .editPostButton {
@@ -103,7 +114,7 @@ mark {
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
-  margin-top: 0.5rem; /* Adjust the spacing if needed */
+  margin-top: 0.5rem; 
 }
 
 .editPostButton:hover {
@@ -179,13 +190,11 @@ body.dark-mode .socialShare .shareIcon:hover {
 
 @media (max-width: 480px) {
   .blogPost {
-    padding: 0.8rem;  
-    max-width: 90%;       
-    margin: 1rem auto;   
-    padding: 1rem;      
+    padding: 0.8rem;
+    max-width: 100%; 
   }
 
   .blogPost__title {
-    font-size: 1.3rem;
+    font-size: 1.5rem; 
   }
 }
