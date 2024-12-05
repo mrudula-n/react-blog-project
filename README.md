@@ -69,3 +69,82 @@ I used **CSS Modules** for styling. This approach provides locally scoped styles
 ##### Mobile
 
 ![alt text](image-2.png)
+
+
+## Assignment 2
+
+### New Features
+
+- Like Button: Toggle likes with real-time count updates and visual feedback.
+- Comment Section: Add, display, and manage comments with timestamps and toggle visibility.
+- Read Time Estimator: Calculate and display estimated read time for blog content.
+- Read More/Read Less: Toggle between truncated and full content views.
+- Efficient State Management: Update and manage component state dynamically with React hooks.
+- Styling and Accessibility: Responsive design with accessible controls and labels.
+
+
+## Assignment 3
+
+### New Features
+
+**Post Editor Form**
+- Collects post details (title, content, tags, category, publish status).
+- Handles controlled components for managing form state.
+
+**Form Validation**
+- Validates input fields (title, content, tags) with error messages.
+- Supports validation on change, blur, and submit events.
+
+**Rich Text Editor**
+- Allows formatting options: bold, italic, and heading.
+- Updates content dynamically based on user selection.
+
+**Tag Management**
+- Add tags using the Enter key.
+- Remove tags via a delete button.
+- Prevent duplicate or empty tags.
+
+**Dynamic Form Handling**
+- Handles checkbox, text, textarea, and select inputs.
+- Toggles publish state and adjusts the submit button label dynamically.
+
+**Error Handling**
+- Displays error messages for invalid fields.
+- Maintains per-field validation state.
+
+**State Persistence**
+- Manages form data with React's useState to preserve state updates.
+
+
+## Assignment 4
+
+### New Features
+
+**Search Functionality**
+- Debounced input to prevent excessive filtering during typing.
+- Multi-field search across titles and content.
+- Real-time results count display.
+
+**Filters**
+- Category Filter: Filter posts by selected category.
+- Author Filter: Narrow posts down by author.
+- Tag Filters: Enable multi-tag selection for refined results.
+- Combine multiple filters (category, author, tags).
+
+**Pagination**
+- Navigate between pages of results.
+- Define items per page with dynamic result slicing.
+- Show current page and total pages.
+
+**Custom Hooks**
+- useSearch: Reusable logic for search, including debouncing and result computation.
+- useFilters: Reusable logic for filtering items based on multiple criteria.
+
+**Performance Optimizations**
+- Memoization of filtered items, categories, authors, and tags using useMemo.
+- Debounced search term update for smoother interactions.
+
+**Error and Loading States**
+- Display "No results found" when no posts match criteria.
+- Maintain user-friendly states during data updates.
+
