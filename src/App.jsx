@@ -1,7 +1,8 @@
 // src/App.jsx
 import { posts as initialPosts } from './data/posts';
 import { RouterProvider } from 'react-router-dom';
-import { AuthProvider } from "./Context/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import { AppProviders } from "./providers/AppProviders";
 import { router } from './router/index';
 import './App.css';
 import { useState } from 'react';
@@ -39,7 +40,9 @@ function App() {
   return (
     <div>
       <AuthProvider>
+      <AppProviders>
       <RouterProvider router={router} />
+      </AppProviders>
     </AuthProvider>
     </div>
   );

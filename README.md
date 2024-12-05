@@ -229,3 +229,17 @@ I used **CSS Modules** for styling. This approach provides locally scoped styles
 ![alt text](<Test Cases.png>)
 ![alt text](<Post Manager.png>)
 ![alt text](<Form example.png>)
+
+## Assignment 7
+
+### New Features
+- Theme Switching: Enables users to toggle between light and dark themes, dynamically updating global CSS variables for colors, typography, and spacing.
+- User Preferences Management: Manages user-specific settings like font size, reduced motion, language, and layout density, with persistent storage in localStorage.
+- Global State Management: Centralizes the state for blog posts, categories, and tags using BlogContext and useReducer, handling loading, errors, and CRUD operations.
+- Reusable Context Providers: Provides Theme, Preferences, and Blog contexts as modular providers, combined into a single AppProviders wrapper for easy integration.
+- Settings Interface: Offers a UI for users to configure preferences and toggle themes, including reset functionality to restore default settings.
+- State Persistence: Stores theme and user preferences in localStorage, ensuring settings persist across user sessions.
+- Testing Scenarios: Provides comprehensive unit tests for context behavior, state updates, and user interactions like theme toggling and preference management.
+
+### Screenshot
+![alt text](image-13.png)

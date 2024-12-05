@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useAuthContext } from "../context/AuthContext"; // Import the AuthContext
-import { useNavigate } from "react-router-dom"; // For redirection
+import { useAuthContext } from "../contexts/AuthContext"; 
+import { useNavigate } from "react-router-dom";
 import styles from "./Profile.module.css";
 
 function Profile() {
