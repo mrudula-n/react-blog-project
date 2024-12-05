@@ -82,6 +82,8 @@ I used **CSS Modules** for styling. This approach provides locally scoped styles
 - Efficient State Management: Update and manage component state dynamically with React hooks.
 - Styling and Accessibility: Responsive design with accessible controls and labels.
 
+### Screenshots
+![alt text](image-3.png)
 
 ## Assignment 3
 
@@ -115,6 +117,8 @@ I used **CSS Modules** for styling. This approach provides locally scoped styles
 **State Persistence**
 - Manages form data with React's useState to preserve state updates.
 
+### Screenshots
+![alt text](image-4.png)
 
 ## Assignment 4
 
@@ -148,3 +152,42 @@ I used **CSS Modules** for styling. This approach provides locally scoped styles
 - Display "No results found" when no posts match criteria.
 - Maintain user-friendly states during data updates.
 
+### Screenshots
+![alt text](image-5.png)
+![alt text](image-6.png)
+
+
+## Assignment 5
+
+### New Features
+
+#### Routing System
+- **Basic Routing:** Implements routes for home, blog posts, profile, and error handling.
+- **Nested Routes:** Supports routes under a parent route (e.g., /posts with child routes like :id and new).
+- **Dynamic Routes:** Uses parameters like :id for rendering specific blog post details.
+
+#### Layout System
+- **Shared Layout:** A consistent structure with a header, main content, sidebar, and footer.
+- **Responsive Design:** Adapts the layout for desktop and mobile screens using CSS Grid and media queries.
+- **Dynamic Content Area:** Renders child routes dynamically within the layout using Outlet.
+
+#### Navigation
+- **Dynamic Menu:** Provides links to main routes with active state highlighting.
+- **Mobile Menu:** Includes a responsive hamburger menu for small screens.
+- **Accessible Navigation:** Uses ARIA attributes for better accessibility.
+
+#### Sidebar
+- **Categories Section:** Displays navigable categories for filtering posts.
+- **Recent Posts:** Lists recent blog posts with navigation to their details.
+
+#### Error Handling
+- **Not Found Page:** Custom 404 error page for invalid routes with navigation options.
+- **Error Boundaries:** Captures and displays detailed errors using useRouteError.
+
+### Screenshots
+
+#### Desktop
+![alt text](image-7.png)
+
+#### Mobile
+![alt text](image-8.png)
