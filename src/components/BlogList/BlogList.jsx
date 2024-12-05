@@ -8,10 +8,15 @@ import BlogPost from "../BlogPost/BlogPost";
 import { Oval } from "react-loader-spinner";
 import PropTypes from "prop-types";
 import styles from "./BlogList.module.css";
+import { useBlog } from "../../contexts/BlogContext";
 
 const POSTS_PER_PAGE = 5;
 
-function BlogList({ posts, isDarkMode, onFilterChange }) {
+function BlogList({ isDarkMode, onFilterChange }) {
+  // Use the Blog Context to get posts
+  const { state } = useBlog();
+  const { posts, isLoading, error } = state;
+
   const {
     filters,
     handleFilterChange,
@@ -26,12 +31,10 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
     handleSearch,
     results: searchResults,
     isSearching,
-    isLoading,
   } = useSearch(filteredItems, ["title", "content", "author", "tags", "category"]);
 
   const displayedPosts = isSearching ? searchResults : filteredItems;
 
-  // Use `usePagination` without modifications
   const {
     items: currentPosts,
     currentPage,
@@ -40,6 +43,14 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
     prevPage,
     goToPage,
   } = usePagination(displayedPosts, POSTS_PER_PAGE);
+
+  if (error) {
+    return (
+      <div className={styles.error}>
+        <p>Something went wrong: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -95,16 +106,6 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
 }
 
 BlogList.propTypes = {
-  posts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-      author: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
-      image: PropTypes.string,
-    })
-  ).isRequired,
   isDarkMode: PropTypes.bool.isRequired,
   onFilterChange: PropTypes.func,
 };

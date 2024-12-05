@@ -1,14 +1,15 @@
 // src/router/index.jsx
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
-import Bloglist from "../pages/BlogList";
+import BlogList from "../pages/BlogList";
 import PostDetail from "../pages/PostDetail";
 import NewPost from "../pages/NewPost";
 import EditPost from "../pages/EditPost";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
+import Settings from "../components/Settings/Settings";
 
 const requireAuth = (element, isAuthenticated) => {
   if (!isAuthenticated) {
@@ -27,15 +28,13 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-
       { path: "login", element: <Login /> },
-
       {
         path: "posts",
         children: [
           {
             index: true,
-            element: <Bloglist />,
+            element: <BlogList />,
           },
           {
             path: ":id",
@@ -54,6 +53,10 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "settings", // Add route for Settings page
+        element: <Settings />,
       },
     ],
   },
