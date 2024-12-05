@@ -1,12 +1,14 @@
-import Header from './components/Header'
+import Header from './components/Header';
+import BlogList from './components/BlogList/BlogList';
+import { posts } from './data/posts';
+import './App.css';
 
 function App() {
   return (
     <div className="app">
       <Header />
-      <main>
-        <h2>Welcome to my blog!</h2>
-        <p>This is my first React component.</p>
+      <main className="main-content">
+        <BlogList posts={posts} />
       </main>
     </div>
   );
