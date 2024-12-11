@@ -15,8 +15,8 @@ function Profile() {
   // Load profile data from localStorage on mount
   useEffect(() => {
     const savedProfile = JSON.parse(localStorage.getItem("profile")) || {
-      name: "John Doe",
-      email: "johndoe@example.com",
+      name: "Mrudula",
+      email: "mrudula@gmail.com",
       bio: "A short bio about yourself",
       profilePicture: "",
     };

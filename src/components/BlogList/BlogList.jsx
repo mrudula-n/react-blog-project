@@ -11,7 +11,7 @@ import styles from "./BlogList.module.css";
 
 const POSTS_PER_PAGE = 5;
 
-function BlogList({ posts, isDarkMode, onFilterChange }) {
+function BlogList({ posts, isDarkMode, onEdit }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
@@ -28,7 +28,7 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
     handleSearch,
     results: searchResults,
     isSearching,
-    isLoading, // Loading state from `useSearch`
+    isLoading, // Loading state from useSearch
   } = useSearch(filteredItems, [
     "title",
     "content",
@@ -47,21 +47,21 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
   return (
     <div>
       <div className={styles.blogControls}>
-        <BlogSearch
+        {/* <BlogSearch
           searchTerm={searchTerm}
           onSearch={handleSearch}
           resultCount={searchResults.length}
-        />
+        /> */}
         <BlogFilters
           filters={filters}
-          onFilterChange={onFilterChange ? onFilterChange : handleFilterChange}
+          onFilterChange={handleFilterChange}
           categories={categories}
           authors={authors}
           allTags={allTags}
         />
       </div>
       <div className={styles.blogList}>
-        {isLoading ? (
+        {isLoading ? ( // Show loading indicator when isLoading is true
           <div className={styles.loading}>
             <Oval color="#00BFFF" height={50} width={50} />
           </div>
@@ -73,6 +73,7 @@ function BlogList({ posts, isDarkMode, onFilterChange }) {
                   key={post.id}
                   {...post}
                   isDarkMode={isDarkMode}
+                  onEdit={() => onEdit(post)}
                   searchTerm={searchTerm}
                 />
               ))}
@@ -105,7 +106,7 @@ BlogList.propTypes = {
     })
   ).isRequired,
   isDarkMode: PropTypes.bool.isRequired,
-  onFilterChange: PropTypes.func,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default BlogList;
