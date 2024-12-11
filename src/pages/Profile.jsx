@@ -18,7 +18,8 @@ function Profile() {
       name: "Mrudula",
       email: "mrudula@gmail.com",
       bio: "A short bio about yourself",
-      profilePicture: "",
+      profilePicture:
+        "https://as2.ftcdn.net/v2/jpg/01/45/36/30/1000_F_145363098_3MwMcG2uCbTRo5mAwkZr82HCi6DTkSHh.jpg", // Default image
     };
     setProfile(savedProfile);
   }, []);
@@ -33,7 +34,8 @@ function Profile() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
+    })
+  );
   };
 
   const handleImageChange = (e) => {
