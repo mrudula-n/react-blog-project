@@ -54,6 +54,9 @@ function BlogList({ posts, isDarkMode, onEdit }) {
         /> */}
         <BlogFilters
           filters={filters}
+          searchTerm={searchTerm}
+          onSearch={handleSearch}
+          resultCount={searchResults.length}
           onFilterChange={handleFilterChange}
           categories={categories}
           authors={authors}

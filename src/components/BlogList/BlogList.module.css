@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 2rem;
   background-color: #f9f9f9;
-  align-items: center; /* Ensures all child elements are center-aligned */
+  align-items: center;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -16,7 +16,7 @@
   gap: 1rem;
   width: 100%;
   max-width: 800px;
-  margin: 0 auto; /* Center-align the blogControls container */
+  margin: 0 auto;
 }
 
 .blogPosts {
@@ -36,7 +36,6 @@
 
 .pagination {
   margin-top: 2rem;
-  text-align: center; /* Ensures pagination is center-aligned */
 }
 
 /* Dark Mode */

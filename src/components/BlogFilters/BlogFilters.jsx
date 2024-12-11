@@ -18,14 +18,10 @@ const BlogFilters = memo(function BlogFilters({
       {/* Row 1: Search Posts and Category */}
       <div className={styles.filterRow}>
         <div className={styles.filterGroup}>
-          <label htmlFor="search">Search Posts:</label>
-          <input
-            id="search"
-            type="text"
-            value={searchTerm}
-            onChange={(e) => onSearch(e.target.value)}
-            className={styles.searchInput}
-            placeholder="Search posts..."
+          <BlogSearch
+            searchTerm={searchTerm}
+            onSearch={onSearch}
+            resultCount={resultCount}
           />
         </div>
 
