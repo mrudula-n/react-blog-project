@@ -47,11 +47,11 @@ function BlogList({ posts, isDarkMode, onEdit }) {
   return (
     <div>
       <div className={styles.blogControls}>
-        <BlogSearch
+        {/* <BlogSearch
           searchTerm={searchTerm}
           onSearch={handleSearch}
           resultCount={searchResults.length}
-        />
+        /> */}
         <BlogFilters
           filters={filters}
           onFilterChange={handleFilterChange}

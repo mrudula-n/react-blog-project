@@ -8,6 +8,8 @@ export const posts = [
     date: "2024-03-15",
     readTime: 5,
     image: "/images/image1.png",
+    tags: ["React", "Beginner", "Frontend"],
+    category: "React Basics", 
   },
   {
     id: 2,
@@ -18,6 +20,8 @@ export const posts = [
     date: "2024-03-16",
     readTime: 3,
     image: "/images/image2.png",
+    tags: ["React", "Props", "Reusability"],
+    category: "React Basics", 
   },
   {
     id: 3,
@@ -28,6 +32,8 @@ export const posts = [
     date: "2024-03-17",
     readTime: 5,
     image: "/images/image3.png",
+    tags: ["CSS", "Styling", "Frontend"],
+    category: "Frontend Design", 
   },
   {
     id: 4,
@@ -38,5 +44,7 @@ export const posts = [
     date: "2024-03-18",
     readTime: 4,
     image: "/images/image4.png",
+    tags: ["React", "Hooks", "Advanced"],
+    category: "Advanced React", 
   },
 ];
