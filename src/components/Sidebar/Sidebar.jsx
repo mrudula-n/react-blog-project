@@ -1,13 +1,23 @@
-import { useState, useEffect } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { posts } from "../../data/posts";
 import styles from "./Sidebar.module.css";
+import { useTheme } from "../../contexts/ThemeContext"; // Import the useTheme hook
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [recentPosts, setRecentPosts] = useState([]);
   const navigate = useNavigate();
+  const { theme } = useTheme(); // Get the current theme from context
 
-  const categories = ["Technology", "Lifestyle", "Travel"];
+  // Extract unique categories dynamically
+  const categories = Array.from(new Set(posts.map((post) => post.category)));
+
+  // Get the 5 most recent posts sorted by date
+  const recentPosts = posts
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 5);
 
   const navItems = [
     { path: "/", label: "Home" },
@@ -15,13 +25,6 @@ function Sidebar() {
     { path: "/posts/new", label: "New Post" },
     { path: "/profile", label: "Profile" },
   ];
-
-  // Load the latest posts from localStorage when the component mounts
-  useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    const sortedPosts = savedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-    setRecentPosts(sortedPosts.slice(0, 5)); // Limit to the 5 most recent posts
-  }, []);
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -40,18 +43,22 @@ function Sidebar() {
 
       {/* Sidebar Drawer */}
       <aside
-        className={`${styles.sidebar} ${isOpen ? styles["sidebar--open"] : ""}`}
+        className={`${styles.sidebar} ${isOpen ? styles["sidebar--open"] : ""} ${
+          theme === "dark" ? styles["sidebar--dark"] : ""
+        }`}
       >
-        {isOpen && <button
-          className={styles.sidebarClose}
-          onClick={toggleSidebar}
-          aria-label="Close Sidebar"
-        >
-          ×
-        </button> }
+        {isOpen && (
+          <button
+            className={styles.sidebarClose}
+            onClick={toggleSidebar}
+            aria-label="Close Sidebar"
+          >
+            ×
+          </button>
+        )}
         {isOpen &&
           navItems.map((item) => (
-            <section key={item.path} className={styles.sidebar__section} >
+            <section key={item.path} className={styles.sidebar__section}>
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
@@ -65,6 +72,7 @@ function Sidebar() {
             </section>
           ))}
 
+        {/* Categories Section */}
         <section className={styles.sidebar__section}>
           <h3 className={styles.sidebar__title}>Categories</h3>
           <ul className={styles.sidebar__list}>
@@ -72,7 +80,8 @@ function Sidebar() {
               <li key={category} className={styles.sidebar__item}>
                 <button
                   onClick={() => {
-                    navigate(`/posts?category=${category.toLowerCase()}`);
+                    const slug = category.toLowerCase().replace(/\s+/g, "-");
+                    navigate(`/posts?category=${category}`);
                     setIsOpen(false);
                   }}
                   className={styles.sidebar__link}
@@ -84,6 +93,7 @@ function Sidebar() {
           </ul>
         </section>
 
+        {/* Recent Posts Section */}
         <section className={styles.sidebar__section}>
           <h3 className={styles.sidebar__title}>Recent Posts</h3>
           <ul className={styles.sidebar__list}>

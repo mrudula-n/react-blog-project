@@ -5,20 +5,28 @@
   position: fixed;
   top: 0;
   right: -250px;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  border-left: 1px solid var(--border-color);
+  background-color: var(--background-color); /* Dynamic background color */
+  border-left: 1px solid #e0e0e0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: right 0.3s ease-in-out;
+  transition: right 0.3s ease-in-out, background-color 0.3s ease-in-out;
   z-index: 1005;
   overflow-y: auto;
   padding-bottom: 1rem;
+  color: var(--text-color); /* Dynamic text color */
 }
 
 .sidebar--open {
   right: 0; /* Slide into view */
 }
 
+/* Dark Mode Sidebar Styles */
+.sidebar--dark {
+  background-color: #121212; /* Dark background */
+  color: #ffffff; /* Light text */
+  border-left: 1px solid #333;
+}
+
+/* Sidebar Sections */
 .sidebar__section {
   padding: 20px;
 }
@@ -27,7 +35,7 @@
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: var(--text-color);
+  color: inherit; /* Match current text color */
 }
 
 .sidebar__list {
@@ -40,13 +48,14 @@
   margin-bottom: 10px;
 }
 
+/* Sidebar Links */
 .sidebar__link {
   display: inline-block;
   width: 100%;
   padding: 8px 12px;
   font-size: 16px;
   text-align: left;
-  color: var(--link-color);
+  color: var(--text-color); /* Dynamic text color */
   background-color: transparent;
   border: none;
   border-radius: 4px;
@@ -55,13 +64,13 @@
 }
 
 .sidebar__link:hover {
-  background-color: var(--hover-background-color);
-  color: var(--link-hover-color);
+  background-color: rgba(255, 255, 255, 0.1); /* Light hover for dark mode */
+  color: var(--text-color);
 }
 
 .sidebar__link:focus {
-  outline: 2px solid var(--link-color);
-  background-color: var(--hover-background-color);
+  outline: 2px solid var(--text-color);
+  background-color: rgba(255, 255, 255, 0.1); /* Light focus for dark mode */
 }
 
 /* Toggle Button for Mobile */
@@ -69,15 +78,17 @@
   position: fixed;
   top: 10px;
   right: 10px;
-  background: var(--button-background);
-  color: var(--button-color);
+  background: var(--text-color); /* Match theme text color */
+  color: var(--background-color); /* Contrast with text color */
   border: none;
   font-size: 18px;
   border-radius: 4px;
   cursor: pointer;
   z-index: 1001;
+  transition: background-color 0.3s, color 0.3s;
 }
 
+/* Close Button */
 .sidebar__close {
   position: absolute;
   top: 10px;
@@ -85,8 +96,8 @@
   background: transparent;
   border: none;
   font-size: 24px;
-  color: var(--text-color);
   cursor: pointer;
+  color: inherit; /* Match current text color */
 }
 
 /* Overlay for Sidebar */
