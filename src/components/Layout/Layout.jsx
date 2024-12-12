@@ -12,7 +12,7 @@ function Layout() {
   const location = useLocation();
 
   // Define paths where PostManager and FormExample should not be visible
-  const excludedPaths = ["/login", "/posts/new"];
+  const excludedPaths = ["/login", "/posts/new", "/posts", "/profile"];
 
   // Check if the current path is excluded
   const shouldShowExtras = !excludedPaths.includes(location.pathname);

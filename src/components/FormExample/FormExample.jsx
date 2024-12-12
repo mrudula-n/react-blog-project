@@ -1,7 +1,10 @@
 import { useForm } from "../../hooks/useForm";
+import { useState } from "react";
 import styles from "./FormExample.module.css";
 
 function FormExample() {
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
   const validate = (values) => {
     const errors = {};
     if (!values.name) {
@@ -12,7 +15,7 @@ function FormExample() {
 
     if (!values.email) {
       errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
       errors.email = "Email is invalid";
     }
 
@@ -29,18 +32,26 @@ function FormExample() {
   } = useForm({ name: "", email: "" }, validate);
 
   const onSubmit = async (formData) => {
-    alert(`Form Submitted: ${JSON.stringify(formData)}`);
+    // Save the form data to localStorage
+    const existingData = JSON.parse(localStorage.getItem("formData")) || [];
+    const updatedData = [...existingData, formData];
+    localStorage.setItem("formData", JSON.stringify(updatedData));
+
+    alert(`Form Submitted and Saved to LocalStorage: ${JSON.stringify(formData)}`);
+    reset(); // Reset form after successful submission
+    setHasSubmitted(false); // Reset submission state
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setHasSubmitted(true); // Mark form as submitted
+    handleSubmit(onSubmit); // Validate and submit
   };
 
   return (
     <div className={styles.formContainer}>
       <h2>Form Example</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(onSubmit);
-        }}
-      >
+      <form onSubmit={handleFormSubmit}>
         <div className={styles.formGroup}>
           <label htmlFor="name">Name</label>
           <input
@@ -50,8 +61,11 @@ function FormExample() {
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
+            className={errors.name && hasSubmitted ? styles.errorInput : ""}
           />
-          {errors.name && <span className={styles.error}>{errors.name}</span>}
+          {errors.name && hasSubmitted && (
+            <span className={styles.error}>{errors.name}</span>
+          )}
         </div>
 
         <div className={styles.formGroup}>
@@ -63,13 +77,25 @@ function FormExample() {
             value={values.email}
             onChange={handleChange}
             onBlur={handleBlur}
+            className={errors.email && hasSubmitted ? styles.errorInput : ""}
           />
-          {errors.email && <span className={styles.error}>{errors.email}</span>}
+          {errors.email && hasSubmitted && (
+            <span className={styles.error}>{errors.email}</span>
+          )}
         </div>
 
         <div className={styles.actions}>
-          <button type="submit">Submit</button>
-          <button type="button" onClick={reset}>
+          <button type="submit" className={styles.submitButton}>
+            Submit
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              reset();
+              setHasSubmitted(false); // Reset submission state
+            }}
+            className={styles.resetButton}
+          >
             Reset
           </button>
         </div>
