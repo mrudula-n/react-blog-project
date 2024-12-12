@@ -93,54 +93,57 @@ function PostManager() {
 
       {/* List Posts */}
       <ul className={styles.postList}>
-        {posts.map((post) => (
-          <li key={post.id} className={styles.postItem}>
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
-            <button
-              className={styles.like}
-              onClick={() => likePost(post.id)}
-            >
-              Like ({post.likes})
-            </button>
-            <button
-              className={styles.edit}
-              onClick={() => startEditing(post)}
-            >
-              Edit
-            </button>
-            <button
-              className={styles.delete}
-              onClick={() => deletePost(post.id)}
-            >
-              Delete
-            </button>
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <li key={post.id} className={styles.postItem}>
+              <h2>{post.title}</h2>
+              <p>{post.content}</p>
+              <button className={styles.like} onClick={() => likePost(post.id)}>
+                Like ({post.likes})
+              </button>
+              <button
+                className={styles.edit}
+                onClick={() => startEditing(post)}
+              >
+                Edit
+              </button>
+              <button
+                className={styles.delete}
+                onClick={() => deletePost(post.id)}
+              >
+                Delete
+              </button>
 
-            {/* Comments */}
-            <div className={styles.comments}>
-              <h3>Comments</h3>
-              <ul>
-                {post?.comments?.map((comment) => (
-                  <li key={comment.id}>
-                    {comment.text} -{" "}
-                    <small>{new Date(comment.createdAt).toLocaleString()}</small>
-                  </li>
-                ))}
-              </ul>
-              <div className={styles.commentForm}>
-                <input
-                  type="text"
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Add a comment"
-                />
-                <button onClick={() => handleAddComment(post.id)}>
-                  Add Comment
-                </button>
+              {/* Comments */}
+              <div className={styles.comments}>
+                <h3>Comments</h3>
+                <ul>
+                  {post?.comments?.map((comment) => (
+                    <li key={comment.id}>
+                      {comment.text} -{" "}
+                      <small>
+                        {new Date(comment.createdAt).toLocaleString()}
+                      </small>
+                    </li>
+                  ))}
+                </ul>
+                <div className={styles.commentForm}>
+                  <input
+                    type="text"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Add a comment"
+                  />
+                  <button onClick={() => handleAddComment(post.id)}>
+                    Add Comment
+                  </button>
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          ))
+        ) : (
+          <p>No posts available. Start by adding a new post!</p>
+        )}
       </ul>
     </div>
   );
