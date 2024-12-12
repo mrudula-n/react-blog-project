@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid black; /* Circle border around heart */
+  border: 2px solid black;
   border-radius: 50%;
   transition: border-color 0.3s ease;
 }
@@ -24,32 +24,29 @@
   transition: color 0.3s ease;
 }
 
-/* Initial unliked heart with transparent fill */
 .unlikedIcon {
-  color: transparent; /* Heart is only outlined initially */
-  stroke: black; /* Black outline for heart */
+  color: transparent;
+  stroke: black;
   stroke-width: 20px;
 }
 
-/* Liked state (filled heart) */
 .likedIcon {
-  color: red; /* Fill heart with red on like */
-  stroke: none; /* Remove outline when liked */
+  color: red;
+  stroke: none;
 }
 
-/* Dark mode adjustments */
 .darkIconContainer {
-  border-color: white; /* White border in dark mode */
+  border-color: white;
 }
 
 .darkUnlikedIcon {
-  color: transparent; /* Heart is only outlined initially */
-  stroke: white; /* White outline for heart */
+  color: transparent;
+  stroke: white;
   stroke-width: 20px;
 }
 
 .darkLikeCount {
-  color: white; /* White count color in dark mode */
+  color: white;
 }
 
 .likeButton {
