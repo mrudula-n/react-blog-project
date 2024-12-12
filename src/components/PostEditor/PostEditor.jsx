@@ -213,7 +213,7 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
           <label htmlFor="content" className={styles.form_label}>
             Content *  {/*indicates required field*/}
           </label>
-          <RichTextEditor  {/*rich text editor component for post content*/}
+          <RichTextEditor 
             id="content"
             name="content"
             value={formData.content}

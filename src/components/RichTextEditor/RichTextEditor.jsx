@@ -21,33 +21,64 @@ function RichTextEditor({ value, onChange, error, ...props }) {
         newText = `${text.slice(0, start)}**${text.slice(
           start,
           end
-        )}**${text.slice(end)}`; // **bold**
+        )}**${text.slice(end)}`;
         break;
       case "italic":
         newText = `${text.slice(0, start)}_${text.slice(
           start,
           end
-        )}_${text.slice(end)}`; // _italic_
+        )}_${text.slice(end)}`;
         break;
       case "heading1":
         newText = `${text.slice(0, start)}# ${text.slice(
           start,
           end
-        )}${text.slice(end)}`; // # Heading 1
+        )}${text.slice(end)}`;
         break;
-      // ... other formatting cases ...
-
+      case "heading2":
+        newText = `${text.slice(0, start)}## ${text.slice(
+          start,
+          end
+        )}${text.slice(end)}`;
+        break;
+      case "heading3":
+        newText = `${text.slice(0, start)}### ${text.slice(
+          start,
+          end
+        )}${text.slice(end)}`;
+        break;
+      case "list":
+        newText = `${text.slice(0, start)}- ${text.slice(
+          start,
+          end
+        )}\n${text.slice(end)}`;
+        break;
+      case "code":
+        newText = `${text.slice(0, start)}\`\`\`javascript\n${text.slice(
+          start,
+          end
+        )}\n\`\`\`${text.slice(end)}`;
+        break;
+      case "blockquote":
+        newText = `${text.slice(0, start)}> ${text.slice(
+          start,
+          end
+        )}${text.slice(end)}`;
+        break;
+      case "image":
+        newText = `${text.slice(0, start)}![alt text](url)${text.slice(end)}`;
+        break;
+      case "link":
+        newText = `${text.slice(0, start)}[text](url)${text.slice(end)}`;
+        break;
       default:
-        return; // Do nothing if the format is not recognized
+        return;
     }
 
-    // Update the text value with the formatted text
     onChange(newText);
   };
 
-  // Function to handle text selection changes
   const handleSelect = (e) => {
-    // Update the selection state with the start and end indices of the selection
     setSelection({
       start: e.target.selectionStart,
       end: e.target.selectionEnd,
@@ -56,29 +87,85 @@ function RichTextEditor({ value, onChange, error, ...props }) {
 
   return (
     <div className="rich-editor">
-      {" "}
-      {/* Container for the entire rich text editor */}
-      {/*toolbar for formatting options */}
       <div className="rich-editor__toolbar">
-        {/*formatting buttons */}
         <button
           type="button"
           onClick={() => handleFormat("bold")}
           className="toolbar-button"
         >
-          B {/*bold*/}
+          B
         </button>
-        {/*other formatting buttons..*/}
+        <button
+          type="button"
+          onClick={() => handleFormat("italic")}
+          className="toolbar-button"
+        >
+          I
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFormat("heading1")}
+          className="toolbar-button"
+        >
+          H1
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFormat("heading2")}
+          className="toolbar-button"
+        >
+          H2
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFormat("heading3")}
+          className="toolbar-button"
+        >
+          H3
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFormat("list")}
+          className="toolbar-button"
+        >
+          List
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFormat("code")}
+          className="toolbar-button"
+        >
+          Code
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFormat("blockquote")}
+          className="toolbar-button"
+        >
+          Quote
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFormat("image")}
+          className="toolbar-button"
+        >
+          Image
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFormat("link")}
+          className="toolbar-button"
+        >
+          Link
+        </button>
       </div>
-      {/* Text area for editing content */}
       <textarea
-        className={`rich-editor__content ${error ? "error" : ""}`} // Apply error styles if there's an error
-        value={value} // Bind the textarea value to the `value` prop
-        onChange={(e) => onChange(e.target.value)} // Call `onChange` with the updated text on every change
-        onSelect={handleSelect} // Call `handleSelect` to update selection state when text is selected
-        {...props} // Pass any other props to the textarea
+        className={`rich-editor__content ${error ? "error" : ""}`}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onSelect={handleSelect}
+        {...props}
       />
-      {/* Display error message if there is an error */}
       {error && <span className="error-message">{error}</span>}
     </div>
   );
