@@ -66,7 +66,7 @@
 }
 
 .blogPost__content.expanded {
-  max-height: 1000px; /* Or a high enough value to reveal all content */
+  max-height: 1000px; 
 }
 
 .shareIcon {

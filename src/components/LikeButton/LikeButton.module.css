@@ -1,63 +1,56 @@
 .likeButton {
-    background-color: transparent;
-    border: none;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 0.5rem;
-    gap: 0.5rem;
-  }
-  
-  .iconContainer {
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid black; /* Circle border around heart */
-    border-radius: 50%;
-    transition: border-color 0.3s ease;
-  }
-  
-  .likeIcon {
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
-  }
-  
-  /* Initial unliked heart with transparent fill */
-  .unlikedIcon {
-    color: transparent; /* Heart is only outlined initially */
-    stroke: black; /* Black outline for heart */
-    stroke-width: 20px;
-  }
-  
-  /* Liked state (filled heart) */
-  .likedIcon {
-    color: red; /* Fill heart with red on like */
-    stroke: none; /* Remove outline when liked */
-  }
-  
-  /* Dark mode adjustments */
-  .darkIconContainer {
-    border-color: white; /* White border in dark mode */
-  }
-  
-  .darkUnlikedIcon {
-    color: transparent; /* Heart is only outlined initially */
-    stroke: white; /* White outline for heart */
-    stroke-width: 20px;
-  }
-  
-  .darkLikeCount {
-    color: white; /* White count color in dark mode */
-  }
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  transition: transform 0.1s ease;
+}
 
-  .likeButton {
-    transition: transform 0.1s ease;
-  }
-  
-  .likeButton:active {
-    transform: scale(1.2);
-  }
-  
-  
+.iconContainer {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 50%;
+  transition: border-color 0.3s ease;
+}
+
+.likeIcon {
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.unlikedIcon {
+  color: transparent;
+  stroke: black;
+  stroke-width: 20px;
+}
+
+.likedIcon {
+  color: red;
+  stroke: none;
+}
+
+/* Dark mode adjustments */
+.darkIconContainer {
+  border-color: white;
+}
+
+.darkUnlikedIcon {
+  color: transparent;
+  stroke: white;
+  stroke-width: 20px;
+}
+
+.darkLikeCount {
+  color: white;
+}
+
+.likeButton:active {
+  transform: scale(1.2);
+}
