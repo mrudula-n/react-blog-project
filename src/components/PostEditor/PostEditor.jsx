@@ -23,10 +23,10 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("postDraft"));
     if (savedData) {
-      console.log('savedData if condition');
+      console.log("savedData if condition");
       setFormData(savedData);
     } else if (post) {
-      console.log('savedData else condition');
+      console.log("savedData else condition");
       setFormData({
         title: post.title || "",
         content: post.content || "",
@@ -56,7 +56,9 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
       case "tags":
         return value.length === 0 ? "At least one tag is required" : "";
       case "image":
-        return value
+        return value &&
+          !value.startsWith("blob:") &&
+          !value.startsWith("data:image/")
           ? "Invalid image format"
           : "";
       default:
@@ -77,7 +79,11 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
         }));
         return;
       }
-      newValue = URL.createObjectURL(file);
+      newValue = URL.createObjectURL(file); // Generate preview URL for valid files
+      setErrors((prev) => ({
+        ...prev,
+        image: "", // Clear previous error
+      }));
     }
 
     setFormData((prev) => ({
@@ -141,7 +147,9 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             value={formData.title}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={`${styles.input_field} ${errors.title ? styles.error : ""}`}
+            className={`${styles.input_field} ${
+              errors.title ? styles.error : ""
+            }`}
             placeholder="Enter post title..."
           />
           {errors.title && (
@@ -160,7 +168,9 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             value={formData.author}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={`${styles.input_field} ${errors.author ? styles.error : ""}`}
+            className={`${styles.input_field} ${
+              errors.author ? styles.error : ""
+            }`}
             placeholder="Enter post author..."
           />
           {errors.author && (
@@ -180,7 +190,9 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
               setFormData((prev) => ({ ...prev, content: value }))
             }
             onBlur={handleBlur}
-            className={`${styles.input_field} ${errors.content ? styles.error : ""}`}
+            className={`${styles.input_field} ${
+              errors.content ? styles.error : ""
+            }`}
             placeholder="Write your content here..."
             rows="10"
             error={errors.content}
@@ -235,7 +247,11 @@ function PostEditor({ post = {}, onSave, isDarkMode }) {
             <span className={styles.error_message}>{errors.image}</span>
           )}
           {formData.image && (
-            <img src={formData.image} alt="Preview" className={styles.image_preview} />
+            <img
+              src={formData.image}
+              alt="Preview"
+              className={styles.image_preview}
+            />
           )}
         </div>
 
