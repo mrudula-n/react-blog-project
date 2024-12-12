@@ -5,7 +5,6 @@ import Sidebar from "../Sidebar/Sidebar";
 import Footer from "../Footer/Footer";
 import PostManager from "../PostManager/PostManager";
 import FormExample from "../FormExample/FormExample";
-import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 import PageTransition from "../PageTransition/PageTransition";
 import styles from "./Layout.module.css";
 
@@ -25,9 +24,6 @@ function Layout() {
       <div className={styles.layout__content}>
         <main className={styles.layout__main}>
           <PageTransition>
-          {/* Theme Switcher always visible */}
-          <ThemeSwitcher />
-
           {/* Conditionally render PostManager and FormExample */}
           {shouldShowExtras && (
             <>

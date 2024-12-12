@@ -8,6 +8,7 @@ import styles from "./BlogPost.module.css";
 import LikeButton from "../LikeButton/LikeButton";
 import CommentSection from "../CommentSection/CommentSection";
 import { calculateReadTime } from "../../utils/readTime";
+import OptimizedImage from "../OptimizedImage/OptimizedImage";
 
 function BlogPost({
   id,
@@ -68,7 +69,12 @@ function BlogPost({
   return (
     <article className={`${styles.blogPost} ${isDarkMode ? styles.dark : ""}`}>
       {image && (
-        <img src={image} alt={title} className={styles.blogPostImage} />
+        <OptimizedImage
+          src={image}
+          alt={title}
+          width={600}
+          height={400}
+        />
       )}
       <div className={styles.blogPost__header}>
         <h2 className={styles.blogPost__title}>
