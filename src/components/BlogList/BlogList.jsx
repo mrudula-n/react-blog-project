@@ -1,52 +1,70 @@
+// Import custom hooks for filtering, searching, and pagination
 import { useFilters } from "../../hooks/useFilters";
 import { useSearch } from "../../hooks/useSearch";
 import { usePagination } from "../../hooks/usePagination";
-import BlogSearch from "../BlogSearch/BlogSearch";
+// Import components for filtering, pagination, and displaying blog posts
 import BlogFilters from "../BlogFilters/BlogFilters";
 import Pagination from "../Pagination/Pagination";
 import BlogPost from "../BlogPost/BlogPost";
-import { Oval } from "react-loader-spinner";
+// Import PropTypes for prop type validation
 import PropTypes from "prop-types";
+// Import CSS styles for the component
 import styles from "./BlogList.module.css";
+// Import the useBlog hook to access blog data from context
 import { useBlog } from "../../contexts/BlogContext";
 import AnimatedList from "../../components/AnimatedList/AnimatedList";
 import LoadingState from "../LoadingState/LoadingState";
 
+// Define the number of posts to display per page
 const POSTS_PER_PAGE = 5;
 
+// Define the BlogList functional component
 function BlogList({ isDarkMode, onFilterChange, filteredPosts }) {
+  // Receives props for dark mode, filter change handler, and pre-filtered posts
+  // Access the blog context state using the useBlog hook
   const { state } = useBlog();
+  // Destructure posts, isLoading, and error from the blog context state
   const { posts, isLoading, error } = state;
 
   const {
-    filters,
-    handleFilterChange,
-    filteredItems,
-    categories,
-    authors,
-    allTags,
-  } = useFilters(filteredPosts || posts);
+    filters, // Current filter values
+    handleFilterChange, // Function to handle filter changes
+    filteredItems, // Filtered blog posts
+    categories, // Available categories
+    authors, // Available authors
+    allTags, // Available tags
+  } = useFilters(filteredPosts || posts); // Pass either pre-filtered posts or all posts to the hook
 
-  console.log(filteredItems, 'Bloglist component', filteredPosts, posts);
+  console.log(filteredItems, "Bloglist component", filteredPosts, posts);
 
+  // Use the useSearch hook to manage searching of blog posts
   const {
-    searchTerm,
-    handleSearch,
-    results: searchResults,
-    isSearching,
-  } = useSearch(filteredItems, ["title", "content", "author", "tags", "category"]);
+    searchTerm, // Current search term
+    handleSearch, // Function to handle search input changes
+    results: searchResults, // Search results
+    isSearching, // Flag indicating if a search is currently active
+  } = useSearch(filteredItems, [
+    "title",
+    "content",
+    "author",
+    "tags",
+    "category",
+  ]); // Pass filtered items and searchable fields to the hook
 
-  const displayedPosts = isSearching ? searchResults : filteredItems;
+  // Determine which posts to display based on search status
+  const displayedPosts = isSearching ? searchResults : filteredItems; // Display search results if searching, otherwise display filtered items
 
+  // Use the usePagination hook to manage pagination of displayed posts
   const {
-    items: currentPosts,
-    currentPage,
-    totalPages,
-    nextPage,
-    prevPage,
-    goToPage,
-  } = usePagination(displayedPosts, POSTS_PER_PAGE);
+    items: currentPosts, // Posts to display on the current page
+    currentPage, // Current page number
+    totalPages, // Total number of pages
+    nextPage, // Function to go to the next page (Not used in this component)
+    prevPage, // Function to go to the previous page (Not used in this component)
+    goToPage, // Function to go to a specific page
+  } = usePagination(displayedPosts, POSTS_PER_PAGE); // Pass displayed posts and posts per page to the hook
 
+  // Render an error message if there is an error
   if (error) {
     return (
       <div className={styles.error}>
@@ -55,54 +73,50 @@ function BlogList({ isDarkMode, onFilterChange, filteredPosts }) {
     );
   }
 
+  // Render the component JSX
   return (
     <div>
+            {/* Container for blog controls (search and filters) */}
       <div className={styles.blogControls}>
-        {/* <BlogSearch
-          searchTerm={searchTerm}
-          onSearch={handleSearch}
-          resultCount={searchResults.length}
-        /> */}
-        <BlogFilters
-          filters={filters}
-          onFilterChange={onFilterChange || handleFilterChange}
-          categories={categories}
-          authors={authors}
-          allTags={allTags}
+      <BlogFilters
+          filters={filters} // Pass current filter values to the component
+          searchTerm={searchTerm} // Current search term.
+          onSearch={handleSearch} // Function to handle search input changes.
+          resultCount={searchResults.length} //number of search results
+          onFilterChange={onFilterChange || handleFilterChange} // Pass filter change handler function to the component
+          categories={categories} // Pass available categories to the component
+          authors={authors} // Pass available authors to the component
+          allTags={allTags} // Pass available tags to the component
         />
       </div>
-      <div className={styles.blogList}>
-        {isLoading ?
-          <LoadingState count={3}/>: currentPosts.length > 0 ? (
+     {/* Container for the blog list */}
+     <div className={styles.blogList}>
+                {/* Conditionally render loading state, blog posts, or no results message */}
+        {isLoading ? <LoadingState count={3}/> : currentPosts.length > 0 ? (
           <>
+                    {/* Container for blog posts */}
             <div className={styles.blogPosts}>
+                            {/* Render an AnimatedList to display the blog posts with animations */}
               <AnimatedList items={currentPosts} renderItem={(post) => <BlogPost
                   key={post.id}
                   {...post}
                   isDarkMode={isDarkMode}
                   searchTerm={searchTerm}
                 /> }/>
-              {/* {currentPosts.map((post) => (
-                <BlogPost
-                  key={post.id}
-                  {...post}
-                  isDarkMode={isDarkMode}
-                  searchTerm={searchTerm}
-                />
-              ))} */}
             </div>
+          
+            {/* Pagination component */}
             <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={goToPage}
+              currentPage={currentPage} // Pass current page number to the component
+              totalPages={totalPages} // Pass total number of pages to the component
+              onPageChange={goToPage} // Pass page change handler function to the component
             />
           </>
         ) : (
           <div className={styles.noResults}>
             <p>No posts found matching your criteria.</p>
             <p>
-              Try adjusting your search or filters. If no posts are available, please add
-              a new post to get started!
+              Try adjusting your search or filters. If no posts are available, please add a new post to get started!
             </p>
           </div>
         )}
@@ -111,10 +125,13 @@ function BlogList({ isDarkMode, onFilterChange, filteredPosts }) {
   );
 }
 
+// Define propTypes for the BlogList component
 BlogList.propTypes = {
-  isDarkMode: PropTypes.bool.isRequired,
-  onFilterChange: PropTypes.func,
-  filteredPosts: PropTypes.array,
+  isDarkMode: PropTypes.bool.isRequired, // isDarkMode prop is required and must be a boolean
+  onFilterChange: PropTypes.func, // onFilterChange prop is optional and must be a function
+  filteredPosts: PropTypes.array, // filteredPosts prop is optional and must be an array
 };
 
+
+// Export the BlogList component as the default export
 export default BlogList;
