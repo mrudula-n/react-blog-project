@@ -6,17 +6,31 @@
   font-family: Arial, sans-serif;
 }
 
+/* Common layout for rows */
+.filterRow {
+  display: flex;
+  justify-content: space-between; /* Align items horizontally */
+  gap: 2rem; /* Space between columns */
+}
+
+/* Ensure both halves are of equal width */
 .filterGroup {
+  flex: 1; /* Take equal space */
   display: flex;
   flex-direction: column;
+  gap: 0.5rem; /* Spacing between label and input */
+  min-width: 200px;
 }
 
 .filterGroup label {
   font-weight: bold;
+  width: 100%; /* Ensure labels align vertically */
   margin-bottom: 0.5rem;
 }
 
-.filterGroup select {
+.filterGroup select,
+.searchInput {
+  width: 100%; /* Full width of the container */
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid #ccc;
@@ -25,14 +39,16 @@
   transition: border-color 0.3s ease;
 }
 
-.filterGroup select:focus {
+.filterGroup select:focus,
+.searchInput:focus {
   border-color: #007bff;
 }
 
+/* Tags Filter */
 .tagsFilter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  display: grid; /* Use grid for layout */
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Flexible grid with minimum width */
+  gap: 0.5rem; /* Spacing between tags */
 }
 
 .tagCheckbox {

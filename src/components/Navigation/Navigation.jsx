@@ -11,8 +11,11 @@ function Navigation() {
   const navItems = [
     { path: "/", label: "Home" },
     { path: "/posts", label: "Blog" },
-    { path: "/posts/new", label: "New Post" },
+    { path: "/post-manager", label: "Posts" },
+    { path: "/form", label: "Form" },
+    { path: "/posts/new", label: "New Blog" },
     { path: "/profile", label: "Profile" },
+    { path: "/settings", label: "Settings" },
   ];
 
   const toggleMenu = () => {

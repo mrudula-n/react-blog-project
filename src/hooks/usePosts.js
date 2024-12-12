@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 
 export function usePosts() {
-  const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [posts, setPosts] = useState(() => {
+    const storedPosts = localStorage.getItem("blog_posts");
+    return storedPosts ? JSON.parse(storedPosts) : [];
+  });  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Load posts from localStorage when the hook initializes
@@ -11,6 +13,7 @@ export function usePosts() {
     if (storedPosts) {
       setPosts(JSON.parse(storedPosts));
     }
+    
   }, []);
 
   // Save posts to localStorage whenever posts state changes

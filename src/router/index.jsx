@@ -10,6 +10,9 @@ import EditPost from "../pages/EditPost";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
 import Settings from "../components/Settings/Settings";
+import PostManagerPage from "../pages/PostManagerPage";
+import FormExamplePage from "../pages/FormExamplePage";
+
 
 const requireAuth = (element, isAuthenticated) => {
   if (!isAuthenticated) {
@@ -57,6 +60,16 @@ export const router = createBrowserRouter([
       {
         path: "settings", // Add route for Settings page
         element: <Settings />,
+      },
+
+      {
+        path: "post-manager",
+        element: <PostManagerPage />,
+      },
+      // Add route for FormExample page
+      {
+        path: "form",
+        element: <FormExamplePage />,
       },
     ],
   },
