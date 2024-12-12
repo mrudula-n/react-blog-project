@@ -1,82 +1,97 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa";
-import ReactMarkdown from "react-markdown";
-import styles from "./BlogPost.module.css";
-import LikeButton from "../LikeButton/LikeButton";
-import CommentSection from "../CommentSection/CommentSection";
-import { calculateReadTime } from "../../utils/readTime";
+import React, { useEffect, useState } from "react"; // Import necessary React hooks for managing state and side effects.
+import PropTypes from "prop-types"; // Import PropTypes for defining data types of the component's props.
+import { FaWhatsapp, FaLinkedin, FaInstagram } from "react-icons/fa"; // Import icons from react-icons library.
+import ReactMarkdown from "react-markdown"; // Import ReactMarkdown for rendering Markdown content.
+import styles from "./BlogPost.module.css"; // Import CSS modules for styling.
+import LikeButton from "../LikeButton/LikeButton"; // Import LikeButton component.
+import CommentSection from "../CommentSection/CommentSection"; // Import CommentSection component.
+import { calculateReadTime } from "../../utils/readTime"; // Import calculateReadTime utility function.
 
 function BlogPost({
-  id,
-  title,
-  content,
-  author,
-  date,
-  image,
-  isDarkMode,
-  // onEdit,
-  isPreview = false,
-  searchTerm,
+  id, // Unique identifier for the blog post.
+  title, // Title of the blog post.
+  content, // Content of the blog post in Markdown format.
+  author, // Author of the blog post.
+  date, // Date of the blog post.
+  image, // Optional image URL for the blog post.
+  isDarkMode, // Flag indicating whether dark mode is enabled.
+  // onEdit, // Function to handle editing the blog post (commented out).
+  isPreview = false, // Flag indicating whether the blog post is in preview mode.
+  searchTerm, // Search term for highlighting matching text.
 }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [readTime, setReadTime] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false); // State variable to track whether the blog post content is expanded.
+  const [readTime, setReadTime] = useState(0); // State variable to store the calculated read time.
 
   useEffect(() => {
-    setReadTime(calculateReadTime(content));
+    setReadTime(calculateReadTime(content)); // Calculate read time based on content length when content changes.
   }, [content]);
 
   const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
+    setIsExpanded(!isExpanded); // Toggle the isExpanded state variable.
   };
 
   const displayContent = isExpanded
-    ? content
-    : content.slice(0, 200) + (content.length > 200 ? "..." : "");
+    ? content // If expanded, display the full content.
+    : content.slice(0, 200) + (content.length > 200 ? "..." : ""); // Otherwise, display a truncated version with ellipsis.
 
   const highlightText = (text, term) => {
+    // Function to highlight matching search terms in plain text.
     if (!term || !text) return text;
-    const regex = new RegExp(`(${term})`, "gi");
+    const regex = new RegExp(`(${term})`, "gi"); // Create a regular expression for matching the search term.
     return text.split(regex).map((part, index) =>
-      regex.test(part) ? (
+      regex.test(part) ? ( // If the part matches the regex, wrap it in a span with highlight class.
         <span key={index} className={styles.highlight}>
           {part}
         </span>
       ) : (
-        part
+        part // Otherwise, return the part as is.
       )
     );
   };
 
   const highlightMarkdownText = (text, term) => {
-    if (!term) return text;
-    const regex = new RegExp(`(${term})`, "gi");
-    return text.replace(regex, "<mark>$1</mark>");
+    // Function to highlight matching search terms in Markdown text.
+    if (!term) return text; //if no search term return the text as is
+    const regex = new RegExp(`(${term})`, "gi"); // Create a regular expression for matching the search term.
+    return text.replace(regex, "<mark>$1</mark>"); // Replace matching parts with <mark> tags.
   };
 
   const childrenToString = (children) => {
+    // Function to convert React children to a string.
     if (Array.isArray(children)) {
+      //check if children is an array
       return children
-        .map((child) => (typeof child === "string" ? child : ""))
-        .join("");
+        .map((child) => (typeof child === "string" ? child : "")) //map through and return only string children
+        .join(""); //join the array to form a string
     }
-    return typeof children === "string" ? children : "";
+    return typeof children === "string" ? children : ""; //if not array return children if it is string
   };
 
   return (
     <article className={`${styles.blogPost} ${isDarkMode ? styles.dark : ""}`}>
-      {image && (
+      {" "}
+      {/* Main article element with conditional dark mode styling. */}
+      {image && ( // Conditionally render the image if available
         <img src={image} alt={title} className={styles.blogPostImage} />
       )}
       <div className={styles.blogPost__header}>
+        {" "}
+        {/* Header section containing title and meta information. */}
         <h2 className={styles.blogPost__title}>
+          {" "}
+          {/* Title with highlighted search terms. */}
           {highlightText(title, searchTerm)}
         </h2>
         <div className={styles.blogPost__meta}>
+          {" "}
+          {/* Meta information section. */}
           <span className={styles.blogPost__author}>
+            {" "}
+            {/* Author with highlighted search terms. */}
             By {highlightText(author, searchTerm)}
           </span>
-          <time className={styles.blogPost__date}>{date}</time>
+          <time className={styles.blogPost__date}>{date}</time>{" "}
+          {/* Date of the blog post. */}
           <span className={styles.blogPost__readTime}>{readTime} min read</span>
         </div>
       </div>
@@ -85,12 +100,13 @@ function BlogPost({
           isExpanded ? styles.expanded : ""
         }`}
       >
-        {isPreview ? (
+        {isPreview ? ( // Conditionally render content based on preview mode.
           <ReactMarkdown>{displayContent}</ReactMarkdown>
         ) : (
           <ReactMarkdown
             components={Object.fromEntries(
               [
+                // Array of Markdown element tags to customize.
                 "p",
                 "h1",
                 "h2",
@@ -102,39 +118,46 @@ function BlogPost({
                 "code",
                 "a",
               ].map((tag) => [
+                // Map each tag to a custom rendering function.
                 tag,
                 tag === "a"
-                  ? ({ href, children }) => (
+                  ? (
+                      { href, children } // Render anchor tags with target="_blank" and highlighted text.
+                    ) => (
                       <a
                         href={href}
                         dangerouslySetInnerHTML={{
+                          // Use dangerouslySetInnerHTML to render highlighted HTML.
                           __html: highlightMarkdownText(
+                            // Highlight search terms in the link text.
                             childrenToString(children),
                             searchTerm
                           ),
                         }}
-                        target="_blank"
+                        target="_blank" // Open link in a new tab.
                         rel="noopener noreferrer"
                         className={styles.link}
                       />
                     )
                   : ({ children }) => {
+                      // Rendering function for other tags.
                       const additionalProps =
                         tag === "blockquote"
                           ? { className: styles.blockquote }
                           : {};
-                      const additionalCodeProps =
+                      const additionalCodeProps = // Add class for blockquote
                         tag === "code" ? { className: styles.code } : {};
 
                       return React.createElement(tag, {
+                        // Create a React element for the current tag.
                         dangerouslySetInnerHTML: {
                           __html: highlightMarkdownText(
                             childrenToString(children),
                             searchTerm
                           ),
                         },
-                        ...additionalProps,
-                        ...additionalCodeProps,
+                        ...additionalProps, //spread the addtional props
+                        ...additionalCodeProps, //spread the code props
                       });
                     },
               ])
@@ -147,16 +170,16 @@ function BlogPost({
       <button
         className={styles.toggleButton}
         onClick={toggleExpanded}
-        aria-expanded={isExpanded}
+        aria-expanded={isExpanded} // Set aria-expanded attribute for accessibility.
       >
         {isExpanded ? "Read Less" : "Read More"}
       </button>
       {!isPreview && (
         <>
-          <LikeButton postId={id} initialLikes={0} isDarkMode={isDarkMode} />
+          <LikeButton postId={id} initialLikes={0} isDarkMode={isDarkMode} />{" "}
           <CommentSection postId={id} />
           <div className={styles.socialShare}>
-            <a
+            <a // WhatsApp share link.
               href="https://www.whatsapp.com"
               target="_blank"
               rel="noopener noreferrer"
