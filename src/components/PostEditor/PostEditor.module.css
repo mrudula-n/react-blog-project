@@ -7,7 +7,6 @@
 
 .post_editor {
   flex: 1;
-  /* margin: 2rem auto; */
   padding: 2rem;
   background-color: #ffffff;
   border-radius: 12px;
@@ -61,7 +60,7 @@ textarea.input_field {
 .submit_button {
   background-color: #007bff;
   color: #fff;
-  width: 200px; /* Button width */
+  width: 200px;
   padding: 0.7rem 1.2rem;
   font-size: 1rem;
   font-weight: bold;
@@ -151,4 +150,3 @@ textarea.input_field {
   background-color: #1e1e1e;
   color: #e0e0e0;
 }
-

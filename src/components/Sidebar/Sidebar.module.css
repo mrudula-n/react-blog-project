@@ -15,7 +15,7 @@
 }
 
 .sidebar--open {
-  right: 0; /* Slide into view */
+  right: 0;
 }
 
 .sidebar__section {
@@ -71,7 +71,6 @@
   background: #007bff;
   color: white;
   border: none;
-  /* padding: 10px 15px; */
   font-size: 18px;
   border-radius: 4px;
   cursor: pointer;
@@ -102,7 +101,7 @@
 /* Responsive Styles */
 @media (min-width: 768px) {
   .sidebarToggle {
-    display: none; /* Hide toggle button on larger screens */
+    display: none;
   }
 
   .sidebar {
