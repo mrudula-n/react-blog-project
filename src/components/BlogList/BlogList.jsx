@@ -58,11 +58,11 @@ function BlogList({ isDarkMode, onFilterChange, filteredPosts }) {
   return (
     <div>
       <div className={styles.blogControls}>
-        <BlogSearch
+        {/* <BlogSearch
           searchTerm={searchTerm}
           onSearch={handleSearch}
           resultCount={searchResults.length}
-        />
+        /> */}
         <BlogFilters
           filters={filters}
           onFilterChange={onFilterChange || handleFilterChange}
