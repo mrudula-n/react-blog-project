@@ -1,15 +1,14 @@
-// src/components/PostEditor
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
-import TagInput from "../TagInput/TagInput";
-import styles from "./PostEditor.module.css";
-import BlogPost from "../BlogPost/BlogPost";
-import RichTextEditor from "../RichTextEditor/RichTextEditor";
-import { useBlog } from "../../contexts/BlogContext";
+import { useState, useEffect } from "react";  // Import useState for managing component state and useEffect for side effects.
+import { useNavigate } from "react-router-dom";  // Import useNavigate for programmatic navigation.
+import PropTypes from "prop-types"; // Import PropTypes for prop type checking.
+import TagInput from "../TagInput/TagInput";  // Import a custom TagInput component.
+import styles from "./PostEditor.module.css"; // Import CSS styles specific to this component.
+import BlogPost from "../BlogPost/BlogPost"; // Import BlogPost component for preview
+import RichTextEditor from "../RichTextEditor/RichTextEditor"; // Import a rich text editor component.
 
-const initialState = {
-  id: undefined,
+function PostEditor({ post = {}, isDarkMode }) {  //post is the post object to edit, isDarkMode is a boolean for dark mode
+  const [formData, setFormData] = useState({  //formData state with initial values for the form
+    id: undefined,
     title: "",
     content: "",
     author: "",
@@ -17,26 +16,19 @@ const initialState = {
     category: "general",
     isPublished: false,
     image: null,
-};
-
-function PostEditor({ post = {}, isDarkMode }) {
-  const [formData, setFormData] = useState({
-    ...initialState
   });
-  const { state } = useBlog();
-  const { posts, isLoading, error } = state;
 
-  const [errors, setErrors] = useState({});
-  const [isDirty, setIsDirty] = useState(false);
-  const navigate = useNavigate();
-  const { dispatch } = useBlog();
+  const [errors, setErrors] = useState({});  // State for storing validation errors.
+  const [isDirty, setIsDirty] = useState(false); // State to track if the form has been modified.  Not used in current code
+  const navigate = useNavigate(); // Hook for navigating programmatically.
 
-  console.log(post, 'posts');
-
-  useEffect(() => {
-    if (post) {
+  useEffect(() => {  //useEffect hook to load saved draft from localStorage or initialize formData with the post prop
+    const savedDraft = JSON.parse(localStorage.getItem("postDraft"));  //get saved draft from localStorage
+    if (savedDraft) {  //if savedDraft exists, set formData to savedDraft
+      setFormData(savedDraft);
+    } else if (post) {   //else if post prop exists,set FormData with post prop values
       setFormData({
-        id: post?.id,
+        id: post.id,
         title: post.title || "",
         content: post.content || "",
         author: post.author || "",
@@ -46,147 +38,154 @@ function PostEditor({ post = {}, isDarkMode }) {
         image: post.image || null,
       });
     }
-  }, [post]);
+  }, []);   //empty dependency array ensures this runs only once on component mount
 
-  const validateField = (name, value) => {
-    switch (name) {
+  const validateField = (name, value) => {   //function to validate individual fields
+    switch (name) {  //switch case for different field validations
       case "title":
-        return value.trim().length < 5
+        return value.trim().length < 5  //if title is less than 5 characters return error message
           ? "Title must be at least 5 characters"
-          : "";
+          : "";   //else return empty string
       case "author":
-        return value.trim().length < 3
+        return value.trim().length < 3   //if author is less than 3 characters return error message
           ? "Author name must be at least 3 characters"
-          : "";
+          : "";  //else return empty string
       case "content":
-        return value.trim().length < 100
+        return value.trim().length < 100  //if content is less than 100 characters return error message
           ? "Content must be at least 100 characters"
-          : "";
+          : "";  //else return empty string
       case "tags":
-        return value.length === 0 ? "At least one tag is required" : "";
+        return value.length === 0    //if no tags are selected return error message
+          ? "At least one tag is required"
+          : "";  //else return empty string
       default:
-        return "";
+        return "";    //default return empty string
     }
   };
 
-  const handleChange = async (e) => {
-    const { name, value, type, checked, files } = e.target;
-    let newValue = type === "checkbox" ? checked : value;
+  const handleChange = async (e) => {    //function to handle changes in form fields
+    const { name, value, type, checked, files } = e.target;  //destructure event target properties
+    let newValue = type === "checkbox" ? checked : value;  //if checkbox set newValue to checked else value
   
-    if (type === "file" && files[0]) {
+    if (type === "file" && files[0]) {  // If a file is uploaded
       const file = files[0];
-      if (!["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
-        setErrors((prev) => ({
+      if (!["image/jpeg", "image/png", "image/gif"].includes(file.type)) { //check for allowed file types
+        setErrors((prev) => ({   //set error message if file type is not allowed
           ...prev,
           image: "Only JPEG, PNG, and GIF images are allowed",
         }));
-        return;
+        return;  //return early if file type is not allowed
       }
-      newValue = await convertToBase64(file);
+      newValue = await convertToBase64(file);  //convert image to base64
     }
   
-    setFormData((prev) => ({
+    setFormData((prev) => ({   //update formData with new value
       ...prev,
       [name]: newValue,
     }));
   
-    setIsDirty(true);
+    setIsDirty(true);  //set isDirty to true indicating form is modified.
   };
 
-  const convertToBase64 = (file) => {
+  const convertToBase64 = (file) => {    //function to convert file to base64 string using FileReader API
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);  //resolve with base64 string when file is loaded
+      reader.onerror = (error) => reject(error);     //reject if error occurs
+      reader.readAsDataURL(file);     //read file as data url
     });
   };
 
-  const handleBlur = (e) => {
+  const handleBlur = (e) => {  // Function to handle blur event on form fields  (when the user clicks outside of the field)
     const { name, value } = e.target;
-    setErrors((prev) => ({
+    setErrors((prev) => ({  // Update the errors state with the validation result for the blurred field.
       ...prev,
-      [name]: validateField(name, value),
+      [name]: validateField(name, value), // Call validateField to get the error message.
     }));
   };
 
-  const saveAsDraft = () => {
-    localStorage.setItem("postDraft", JSON.stringify(formData));
-    alert("Draft saved!");
-    navigate("/");
+  const saveAsDraft = () => {  // Function to save the current form data as a draft in localStorage.
+    localStorage.setItem("postDraft", JSON.stringify(formData));  //save formData to localStorage
+    alert("Draft saved!");    //show alert message
+    navigate("/");   //navigate to home page
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newErrors = {};
-  
-    // Validate all fields
-    Object.keys(formData).forEach((key) => {
-      const error = validateField(key, formData[key]);
-      if (error) newErrors[key] = error;
+  const handleSubmit = (e) => {  //function to handle form submission
+    e.preventDefault();   //prevent default form submission behaviour
+    const newErrors = {};    //create an empty object to store errors
+    Object.keys(formData).forEach((key) => {   //loop through each key in formData
+      const error = validateField(key, formData[key]);  //validate each field
+      if (error) newErrors[key] = error;    //if error exists,add it to newErrors object
     });
-    setErrors(newErrors);
+    setErrors(newErrors);   //set errors state with newErrors
   
-    if (Object.keys(newErrors).length === 0) {
-      // Check if the post exists
-      if (formData.id) {
-        // Update existing post
-        dispatch({
-          type: "UPDATE_POST",
-          payload: {
-            ...formData,
-            date: new Date().toISOString(),
-          },
+    if (Object.keys(newErrors).length === 0) {  //if no errors exist
+      const savedPosts = JSON.parse(localStorage.getItem("posts")) || []; // Get saved posts from localStorage or initialize an empty array.
+  
+      // Check if the post exists based on its id
+      const existingPostIndex = savedPosts.findIndex((p) => p.id === formData.id);  //check if post already exists
+      console.log(JSON.stringify(formData, null, 2), existingPostIndex, '7483', JSON.stringify(savedPosts, null, 2)) // Log data for debugging
+  
+      if (existingPostIndex !== -1) {  //if post exists
+        // Update the existing post
+        savedPosts[existingPostIndex] = {   //update existing post with formData
+          ...savedPosts[existingPostIndex], //retain original properties
+          ...formData,
+          date: new Date().toISOString(),    //update date
+        };
+      } else {   //if post doesn't exist
+        // Add a new post
+        savedPosts.push({   //add new post to savedPosts array
+          ...formData,       
+          id: formData.id || Date.now(),   //set id if it doesn't exist
+          date: new Date().toISOString(),   //set date
         });
-        alert("Post updated successfully!");
-      } else {
-        // Add new post
-        dispatch({
-          type: "ADD_POST",
-          payload: {
-            ...formData,
-            id: Date.now(), // Generate an ID for new posts
-            date: new Date().toISOString(),
-          },
-        });
-        alert("Post published successfully!");
       }
   
-      // Remove the draft and navigate
-      localStorage.removeItem("postDraft");
-      navigate("/");
+      // Save updated posts to localStorage
+      localStorage.setItem("posts", JSON.stringify(savedPosts));  //save updated posts to localStorage
+      localStorage.removeItem("postDraft");   //remove draft from localStorage
+  
+      alert(   //show alert message based on whether post was updated or created
+        existingPostIndex !== -1
+          ? "Post updated successfully!"
+          : "Post published successfully!"
+      );
+      navigate("/");    //navigate to home page
     } else {
-      alert("Please fix the errors before publishing.");
+      alert("Please fix the errors before publishing.");   //show alert message to fix errors
     }
   };
+  
 
   return (
-    <div className={styles.post_editor_container}>
-      <form
+    <div className={styles.post_editor_container}>   {/* main container for post editor */}
+      <form   //form element with onSubmit handler
         onSubmit={handleSubmit}
-        className={`${styles.post_editor} ${isDarkMode ? styles.dark : ""}`}
+        className={`${styles.post_editor} ${isDarkMode ? styles.dark : ""}`}  //apply dark class if isDarkMode is true
       >
-        <div className={styles.form_group}>
-          <label htmlFor="title" className={styles.form_label}>
+        <div className={styles.form_group}> {/*form group for title input */}
+          <label htmlFor="title" className={styles.form_label}> {/*label for title input */}
             Title *
           </label>
-          <input
+          <input    //title input field
             type="text"
             id="title"
             name="title"
             value={formData.title}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={`${styles.input_field} ${
+            onChange={handleChange}     //call handleChange on input change
+            onBlur={handleBlur}       //call handleBlur when input loses focus
+            className={`${styles.input_field} ${ //apply error class if error exists for title
               errors.title ? styles.error : ""
             }`}
-            placeholder="Enter post title..."
+            placeholder="Enter post title..."    //placeholder for title input
           />
-          {errors.title && (
+          {errors.title && (     //display error message if error exists for title
             <span className={styles.error_message}>{errors.title}</span>
           )}
         </div>
 
+          {/*form group for author input, similar structure as title input */}
         <div className={styles.form_group}>
           <label htmlFor="author" className={styles.form_label}>
             Author *
@@ -208,15 +207,16 @@ function PostEditor({ post = {}, isDarkMode }) {
           )}
         </div>
 
+        {/*form group for content input using RichTextEditor component */}
         <div className={styles.form_group}>
           <label htmlFor="content" className={styles.form_label}>
             Content *
           </label>
-          <RichTextEditor
+          <RichTextEditor     //RichTextEditor component for content
             id="content"
             name="content"
             value={formData.content}
-            onChange={(value) =>
+            onChange={(value) =>      //update formData.content when content changes
               setFormData((prev) => ({
                 ...prev,
                 content: value,
@@ -231,9 +231,9 @@ function PostEditor({ post = {}, isDarkMode }) {
           )}
         </div>
 
-        <TagInput
+        <TagInput     //TagInput component for tags
           tags={formData.tags}
-          onChange={(tags) =>
+          onChange={(tags) =>     //update formData.tags when tags change
             setFormData((prev) => ({
               ...prev,
               tags,
@@ -241,11 +241,12 @@ function PostEditor({ post = {}, isDarkMode }) {
           }
         />
 
+        {/* Form group for category select */}
         <div className={styles.form_group}>
           <label htmlFor="category" className={styles.form_label}>
             Category
           </label>
-          <select
+          <select      //category select dropdown
             id="category"
             name="category"
             value={formData.category}
@@ -259,11 +260,12 @@ function PostEditor({ post = {}, isDarkMode }) {
           </select>
         </div>
 
+        {/*form group for image upload  */}
         <div className={styles.form_group}>
           <label htmlFor="image" className={styles.form_label}>
             Upload Image
           </label>
-          <input
+          <input    //image upload input
             type="file"
             id="image"
             name="image"
@@ -283,40 +285,40 @@ function PostEditor({ post = {}, isDarkMode }) {
           )}
         </div>
 
-        <div className={styles.actions}>
-          <button
+        <div className={styles.actions}>   {/*container for action buttons*/}
+          <button     // Button to save the post as a draft.
             type="button"
-            onClick={saveAsDraft}
-            className={styles.draft_button}
+            onClick={saveAsDraft}  //call saveAsDraft function when clicked
+            className={styles.draft_button}   
           >
-            Save as Draft
+            Save as Draft  
           </button>
-          <button type="submit" className={styles.submit_button}>
-            Publish Post
+          <button type="submit" className={styles.submit_button}>   {/* Button to submit the post. */}
+            Publish Post   
           </button>
         </div>
       </form>
 
-      <div style={{ display: "flex", flex: 1 }}>
-        <BlogPost
-          key={formData?.id}
+      <div style={{ display: "flex", flex: 1 }}>    {/*container to display the blog post preview*/}
+        <BlogPost   //preview of the blog post being edited
+          key={formData?.id}  
           id={formData?.id}
           title={formData?.title}
           content={formData?.content}
           author={formData?.author}
           date={formData?.date}
           image={formData?.image}
-          isDarkMode={isDarkMode}
-          isPreview={true}
+          isDarkMode={isDarkMode}  
+          isPreview={true}   //sets the BlogPost component to preview mode
         />
       </div>
     </div>
   );
 }
 
-PostEditor.propTypes = {
-  post: PropTypes.object,
+PostEditor.propTypes = {  // Define PropTypes for the component's props.
+  post: PropTypes.object,  
   isDarkMode: PropTypes.bool.isRequired,
 };
 
-export default PostEditor;
+export default PostEditor;  // Export the PostEditor component as the default export.

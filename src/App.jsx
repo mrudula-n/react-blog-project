@@ -1,51 +1,33 @@
-// src/App.jsx
-import { posts as initialPosts } from './data/posts';
-import { RouterProvider } from 'react-router-dom';
-import { AuthProvider } from "./contexts/AuthContext";
-import { AppProviders } from "./providers/AppProviders";
-import { router } from './router/index';
-import './App.css';
-import { useState } from 'react';
+// Import necessary components and providers
+import { RouterProvider } from "react-router-dom"; // Import RouterProvider for providing the router context
+import { AuthProvider } from "./contexts/AuthContext"; // Import AuthProvider for providing authentication context
+import { AppProviders } from "./providers/AppProviders"; // Import AppProviders for providing other application-level contexts
+import { router } from "./router/index"; // Import the router configuration
+import "./App.css"; // Import global CSS styles
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary"; // Import ErrorBoundary for handling errors gracefully
+import PerformanceMonitor from "./utils/PerformanceMonitor"; // Import PerformanceMonitor for tracking performance
 
+
+// Define the App functional component - The root component of the application.
 function App() {
-  const [posts, setPosts] = useState(initialPosts);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('theme') === 'dark';
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
-
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    document.body.classList.toggle('dark-mode', newMode);
-    localStorage.setItem('theme', newMode ? 'dark' : 'light');
-  };
-
-  const handleSavePost = (updatedPost) => {
-    setPosts((prevPosts) =>
-      updatedPost.id
-        ? prevPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
-        : [...prevPosts, { ...updatedPost, id: Date.now(), date: new Date().toISOString() }]
-    );
-    setIsEditing(false);
-    setEditingPost(null);
-  };
-
-  const handleEdit = (post = null) => {
-    setEditingPost(post);
-    setIsEditing(true);
-  };
-
+  // Render the component JSX
   return (
     <div>
-      <AuthProvider>
-      <AppProviders>
-      <RouterProvider router={router} />
-      </AppProviders>
-    </AuthProvider>
+      {/* Wrap the application with ErrorBoundary to handle errors gracefully */}
+      <ErrorBoundary>
+        {/* Provide authentication context to the application */}
+        <AuthProvider>
+          {/* Provide other application-level contexts */}
+          <AppProviders>
+            <PerformanceMonitor /> {/* Include PerformanceMonitor to track performance */}
+            {/* Render the application's routes using RouterProvider */}
+            <RouterProvider router={router} />
+          </AppProviders>
+        </AuthProvider>
+      </ErrorBoundary>
     </div>
   );
 }
 
+// Export the App component as the default export
 export default App;
