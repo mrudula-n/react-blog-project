@@ -23,7 +23,7 @@
   border-radius: 4px;
   resize: none;
   font-size: 1rem;
-  min-height: 80px; /* Increase height */
+  min-height: 80px;
 }
 
 .comment-form__submit {
@@ -35,7 +35,7 @@
   cursor: pointer;
   position: absolute;
   bottom: 10px;
-  right: 10px; /* Position to right corner */
+  right: 10px;
   transition: background-color 0.3s ease;
 }
 
@@ -121,7 +121,7 @@
   display: flex;
   align-items: center;
   margin-top: 1rem;
-  gap: 1rem; /* Add spacing between Sort by and Hide comments */
+  gap: 1rem;
 }
 
 .sort-options label {

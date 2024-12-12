@@ -1,69 +1,42 @@
-import { useState, useEffect } from "react";
-import BlogPost from "../components/BlogPost/BlogPost";
-import { useParams, useNavigate } from "react-router-dom";
-import styles from "./Home.module.css";
+import { useState, useEffect } from "react"; // Import necessary React hooks for managing state and side effects.
+import BlogPost from "../components/BlogPost/BlogPost"; // Import BlogPost component.
+import { useParams, useNavigate } from "react-router-dom"; // Import hooks for interacting with routing.
+import styles from "./Home.module.css"; // Import CSS modules for styling.
 
 function PostDetail() {
-  const { id } = useParams();
-  const [post, setPost] = useState(null);
-  const navigate = useNavigate();
+  const { id } = useParams(); // Extract the post ID from the URL parameters.
+  const [post, setPost] = useState(null); // State variable for storing the post to be displayed. Initialized to null.
+  const navigate = useNavigate(); // Get navigation function for programmatic routing.
 
-  useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    const foundPost = savedPosts.find((p) => p.id === parseInt(id, 10));
-    console.log('found post', id,  foundPost, JSON.stringify(savedPosts, null, 2))
-    if (foundPost) {
-      setPost(foundPost);
+  useEffect(() => { // Effect hook to fetch the post data when the component mounts or the ID changes.
+    const savedPosts = JSON.parse(localStorage.getItem("posts")) || []; // Retrieve saved posts from localStorage.
+    const foundPost = savedPosts.find((p) => p.id === parseInt(id, 10)); // Find the post with matching ID.
+    console.log('found post', id,  foundPost, JSON.stringify(savedPosts, null, 2))  // Log details for debugging.
+    if (foundPost) {  //check if post is found
+      setPost(foundPost); // Set the found post to the state variable.
     } else {
-      alert("Post not found");
-      navigate("/");
+      alert("Post not found"); // Display an alert if post is not found.
+      navigate("/"); // Navigate to the home page.
     }
-  }, [id, navigate]);
-
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    document.body.classList.toggle("dark-mode", newMode);
-    localStorage.setItem("theme", newMode ? "dark" : "light");
-  };
-
-  const handleSavePost = (updatedPost) => {
-    setPosts((prevPosts) =>
-      updatedPost.id
-        ? prevPosts.map((post) =>
-            post.id === updatedPost.id ? updatedPost : post
-          )
-        : [
-            ...prevPosts,
-            { ...updatedPost, id: Date.now(), date: new Date().toISOString() },
-          ]
-    );
-    setIsEditing(false);
-    setEditingPost(null);
-  };
-
-  const handleEdit = (post = null) => {
-    setEditingPost(post);
-    setIsEditing(true);
-  };
+  }, [id, navigate]); // Dependency array ensures this effect runs when id or navigate changes.
 
   return (
-    <div className={styles.home}>
-      <main className={styles.mainContent}>
-        <BlogPost
-          key={post?.id}
-          id={post?.id}
-          title={post?.title}
-          content={post?.content}
-          author={post?.author}
-          date={post?.date}
-          image={post?.image}
-          isDarkMode={false}
-          isPreview={false}
+    <div className={styles.home}> {/* Main container for the post detail page. */}
+      <main className={styles.mainContent}> {/* Main content area. */}
+        <BlogPost // Render the BlogPost component with the found post data.
+          key={post?.id} // Key prop for efficient rendering updates.
+          id={post?.id} // Pass the post ID.
+          title={post?.title} // Pass the post title.
+          content={post?.content}  // Pass the post content.
+          author={post?.author}  // Pass the post author.
+          date={post?.date}  // Pass the post date.
+          image={post?.image}   // Pass the post image.
+          isDarkMode={false}   // Set isDarkMode to false.
+          isPreview={false}  // Set isPreview to false.
         />
       </main>
     </div>
   );
 }
 
-export default PostDetail;
+export default PostDetail;  // Export the PostDetail component as the default export.
